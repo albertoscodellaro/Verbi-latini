@@ -1,0 +1,1475 @@
+<!DOCTYPE HTML>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Test Interattivo sui Verbi Latini - prof. Giuseppe Frappa</title>
+  
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary-color: #1e3a8a;
+      --secondary-color: #0d9488;
+      --accent-color: #d97706;
+      --bg-light: #f8fafc;
+      --card-bg: #ffffff;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-light);
+      color: #1e293b;
+    }
+
+    .font-latin {
+      font-family: 'Cinzel', Georgia, serif;
+    }
+
+    .header-banner {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+      color: white;
+      border-bottom: 4px solid var(--accent-color);
+    }
+
+    .badge-frappa {
+      background-color: rgba(217, 119, 6, 0.2);
+      border: 1px solid var(--accent-color);
+      color: #fef08a;
+      font-size: 0.95rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: 50rem;
+    }
+
+    .card-custom {
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      background-color: var(--card-bg);
+    }
+
+    .table-options th {
+      background-color: #f1f5f9;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .table-options td {
+      font-size: 0.9rem;
+      vertical-align: middle;
+      padding: 0.35rem 0.5rem;
+    }
+
+    .chk-custom {
+      width: 1.1em;
+      height: 1.1em;
+      cursor: pointer;
+    }
+
+    .verb-display {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #b91c1c;
+      letter-spacing: 0.02em;
+    }
+
+    .clue-display {
+      font-size: 1.15rem;
+      color: #0369a1;
+      font-style: italic;
+    }
+
+    .clock-badge {
+      font-size: 1.25rem;
+      font-weight: 700;
+      font-family: monospace;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+    }
+
+    .clock-normal { background-color: #e0f2fe; color: #0369a1; }
+    .clock-warning { background-color: #fef3c7; color: #92400e; }
+    .clock-danger { background-color: #fee2e2; color: #991b1b; animation: pulse 1s infinite; }
+
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.6; }
+      100% { opacity: 1; }
+    }
+
+    .stat-box {
+      border-radius: 10px;
+      padding: 0.75rem;
+      text-align: center;
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+    }
+
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .result-correct {
+      background-color: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #166534;
+      border-radius: 8px;
+      padding: 1rem;
+    }
+
+    .result-wrong {
+      background-color: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #991b1b;
+      border-radius: 8px;
+      padding: 1rem;
+    }
+
+    .bg-conj-1 { background-color: #eff6ff; }
+    .bg-conj-2 { background-color: #f0fdf4; }
+    .bg-conj-3 { background-color: #fff7ed; }
+    .bg-conj-3io { background-color: #fef2f2; }
+    .bg-conj-4 { background-color: #faf5ff; }
+
+    .modal-header-custom {
+      background-color: #1e3a8a;
+      color: white;
+    }
+
+    .score-badge-high { color: #15803d; font-weight: bold; }
+    .score-badge-low { color: #b91c1c; font-weight: bold; }
+
+    .btn-admin {
+      background-color: #475569;
+      color: white;
+    }
+    .btn-admin:hover {
+      background-color: #334155;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header-banner py-3 px-4 shadow-sm mb-4">
+    <div class="container-fluid d-flex flex-wrap align-items-center justify-content-between gap-3">
+      <div class="d-flex align-items-center gap-3">
+        <i class="fa-solid fa-book-bookmark fs-2 text-warning"></i>
+        <div>
+          <h1 class="h3 font-latin mb-0 fw-bold">Test sui Verbi Latini</h1>
+          <p class="small text-light mb-0 opacity-75">Traduzione interattiva e analisi verbale</p>
+        </div>
+      </div>
+      
+      <div class="d-flex align-items-center gap-2 flex-wrap">
+        <span class="badge-frappa fw-semibold">
+          <i class="fa-solid fa-heart me-1 text-danger"></i> Grazie prof. Giuseppe Frappa
+        </span>
+        <button class="btn btn-outline-light btn-sm" onclick="showHelpModal()">
+          <i class="fa-solid fa-circle-question me-1"></i> Istruzioni
+        </button>
+        <button class="btn btn-admin btn-sm" onclick="promptAdminLogin()">
+          <i class="fa-solid fa-lock me-1"></i> Area Docente
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container-fluid px-3 px-md-4">
+    <div class="row g-4">
+      
+      <!-- LEFT COLUMN: SELECTION & SETTINGS PANEL -->
+      <div class="col-lg-5 col-xl-4">
+        <div class="card card-custom p-3 mb-4">
+          <h5 class="fw-bold text-primary mb-3"><i class="fa-solid fa-sliders me-2"></i>Impostazioni Esercizio</h5>
+          
+          <!-- DIRECTION SELECTION -->
+          <div class="mb-3">
+            <label class="form-label fw-semibold small text-muted text-uppercase mb-1">Direzione Traduzione</label>
+            <div class="btn-group w-100" role="group">
+              <input type="radio" class="btn-check" name="direction" id="dirLatIt" value="LAT_IT" checked onchange="updateSettings()">
+              <label class="btn btn-outline-primary btn-sm" for="dirLatIt">Latino ➔ Ita</label>
+              
+              <input type="radio" class="btn-check" name="direction" id="dirItLat" value="IT_LAT" onchange="updateSettings()">
+              <label class="btn btn-outline-primary btn-sm" for="dirItLat">Ita ➔ Latino</label>
+              
+              <input type="radio" class="btn-check" name="direction" id="dirMixed" value="MIXED" onchange="updateSettings()">
+              <label class="btn btn-outline-primary btn-sm" for="dirMixed">Mista 🔀</label>
+            </div>
+          </div>
+
+          <!-- QUESTION COUNT & TIMER -->
+          <div class="row g-2 mb-3">
+            <div class="col-6">
+              <label class="form-label fw-semibold small text-muted text-uppercase mb-1">Quesiti</label>
+              <select class="form-select form-select-sm" id="numQuestions" onchange="updateSettings()">
+                <option value="10">10 domande</option>
+                <option value="15" selected>15 domande</option>
+                <option value="20">20 domande</option>
+                <option value="30">30 domande</option>
+                <option value="50">50 domande</option>
+                <option value="999">Illimitate (Libera)</option>
+              </select>
+            </div>
+            <div class="col-6">
+              <label class="form-label fw-semibold small text-muted text-uppercase mb-1">Timer</label>
+              <select class="form-select form-select-sm" id="timerConfig" onchange="updateSettings()">
+                <option value="35" selected>35 secondi</option>
+                <option value="20">20 secondi</option>
+                <option value="0">Nessun timer</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- CONJUGATIONS SELECTION -->
+          <div class="mb-3">
+            <label class="form-label fw-semibold small text-muted text-uppercase mb-1">Coniugazioni Attive</label>
+            <div class="d-flex flex-wrap gap-2">
+              <div class="form-check form-check-inline me-0">
+                <input class="form-check-input chk-conj" type="checkbox" id="conj1" value="1" checked onchange="onConjChange()">
+                <label class="form-check-label small" for="conj1">1ª (-are)</label>
+              </div>
+              <div class="form-check form-check-inline me-0">
+                <input class="form-check-input chk-conj" type="checkbox" id="conj2" value="2" checked onchange="onConjChange()">
+                <label class="form-check-label small" for="conj2">2ª (-ēre)</label>
+              </div>
+              <div class="form-check form-check-inline me-0">
+                <input class="form-check-input chk-conj" type="checkbox" id="conj3" value="3" checked onchange="onConjChange()">
+                <label class="form-check-label small" for="conj3">3ª (-ere)</label>
+              </div>
+              <div class="form-check form-check-inline me-0">
+                <input class="form-check-input chk-conj" type="checkbox" id="conj3io" value="3io" checked onchange="onConjChange()">
+                <label class="form-check-label small" for="conj3io">3ª in -io</label>
+              </div>
+              <div class="form-check form-check-inline me-0">
+                <input class="form-check-input chk-conj" type="checkbox" id="conj4" value="4" checked onchange="onConjChange()">
+                <label class="form-check-label small" for="conj4">4ª (-ire)</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- SELECTION OF TENSES & MODES -->
+          <label class="form-label fw-semibold small text-muted text-uppercase mb-1">Tempi e Modi Selezionati</label>
+          <div class="table-responsive mb-2">
+            <table class="table table-bordered table-options mb-0 text-center">
+              <thead>
+                <tr>
+                  <th>Modo / Tempo</th>
+                  <th>Attivo</th>
+                  <th>Passivo</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- INDICATIVO -->
+                <tr class="bg-conj-1"><td class="text-start fw-bold" colspan="3">INDICATIVO</td></tr>
+                <tr><td class="text-start">Presente</td><td><input type="checkbox" class="chk-custom chk-tense" data-mode="ind" data-tense="pres" data-voice="act" checked></td><td><input type="checkbox" class="chk-custom chk-tense" data-mode="ind" data-tense="pres" data-voice="pass" checked></td></tr>
+                <tr><td class="text-start">Imperfetto</td><td><input type="checkbox" class="chk-custom chk-tense" data-mode="ind" data-tense="impf" data-voice="act" checked></td><td><input type="checkbox" class="chk-custom chk-tense" data-mode="ind" data-tense="impf" data-voice="pass" checked></td></tr>
+                <tr><td class="text-start">Perfetto</td><td><input type="checkbox" class="chk-custom chk-tense" data-mode="ind" data-tense="perf" data-voice="act" checked></td><td><input type="checkbox" class="chk-custom chk-tense" data-mode="ind" data-tense="perf" data-voice="pass" checked></td></tr>
+                <tr><td class="text-start">Piuccheperfetto</td><td><input type="checkbox" class="chk-custom chk-tense" data-mode="ind" data-tense="plup" data-voice="act"></td><td><input type="checkbox" class="chk-custom chk-tense" data-mode="ind" data-tense="plup" data-voice="pass"></td></tr>
+                <tr><td class="text-start">Futuro Semplice</td><td><input type="checkbox" class="chk-custom chk-tense" data-mode="ind" data-tense="fut" data-voice="act"></td><td><input type="checkbox" class="chk-custom chk-tense" data-mode="ind" data-tense="fut" data-voice="pass"></td></tr>
+                <tr><td class="text-start">Futuro Anteriore</td><td><input type="checkbox" class="chk-custom chk-tense" data-mode="ind" data-tense="futp" data-voice="act"></td><td><input type="checkbox" class="chk-custom chk-tense" data-mode="ind" data-tense="futp" data-voice="pass"></td></tr>
+
+                <!-- CONGIUNTIVO -->
+                <tr class="bg-conj-2"><td class="text-start fw-bold" colspan="3">CONGIUNTIVO</td></tr>
+                <tr><td class="text-start">Presente</td><td><input type="checkbox" class="chk-custom chk-tense" data-mode="sub" data-tense="pres" data-voice="act"></td><td><input type="checkbox" class="chk-custom chk-tense" data-mode="sub" data-tense="pres" data-voice="pass"></td></tr>
+                <tr><td class="text-start">Imperfetto</td><td><input type="checkbox" class="chk-custom chk-tense" data-mode="sub" data-tense="impf" data-voice="act"></td><td><input type="checkbox" class="chk-custom chk-tense" data-mode="sub" data-tense="impf" data-voice="pass"></td></tr>
+                <tr><td class="text-start">Perfetto</td><td><input type="checkbox" class="chk-custom chk-tense" data-mode="sub" data-tense="perf" data-voice="act"></td><td><input type="checkbox" class="chk-custom chk-tense" data-mode="sub" data-tense="perf" data-voice="pass"></td></tr>
+                <tr><td class="text-start">Piuccheperfetto</td><td><input type="checkbox" class="chk-custom chk-tense" data-mode="sub" data-tense="plup" data-voice="act"></td><td><input type="checkbox" class="chk-custom chk-tense" data-mode="sub" data-tense="plup" data-voice="pass"></td></tr>
+
+                <!-- IMPERATIVO -->
+                <tr class="bg-conj-3"><td class="text-start fw-bold" colspan="3">IMPERATIVO</td></tr>
+                <tr><td class="text-start">Presente</td><td><input type="checkbox" class="chk-custom chk-tense" data-mode="imp" data-tense="pres" data-voice="act"></td><td class="bg-light">-</td></tr>
+                <tr><td class="text-start">Futuro</td><td><input type="checkbox" class="chk-custom chk-tense" data-mode="imp" data-tense="fut" data-voice="act"></td><td class="bg-light">-</td></tr>
+
+                <!-- MODI NON FINITI -->
+                <tr class="bg-conj-4"><td class="text-start fw-bold" colspan="3">INFINITO & MODI INDEFINITI</td></tr>
+                <tr><td class="text-start">Infinito Pres / Perf / Fut</td><td><input type="checkbox" class="chk-custom chk-tense" data-mode="inf" data-tense="all" data-voice="act"></td><td><input type="checkbox" class="chk-custom chk-tense" data-mode="inf" data-tense="all" data-voice="pass"></td></tr>
+                <tr><td class="text-start">Participio Pres / Perf / Fut</td><td><input type="checkbox" class="chk-custom chk-tense" data-mode="part" data-tense="all" data-voice="act"></td><td><input type="checkbox" class="chk-custom chk-tense" data-mode="part" data-tense="all" data-voice="pass"></td></tr>
+                <tr><td class="text-start">Gerundio / Gerundivo / Supino</td><td><input type="checkbox" class="chk-custom chk-tense" data-mode="nominal" data-tense="all" data-voice="act"></td><td><input type="checkbox" class="chk-custom chk-tense" data-mode="nominal" data-tense="all" data-voice="pass"></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="d-flex justify-content-between gap-2 mt-2">
+            <button class="btn btn-outline-secondary btn-sm flex-fill" onclick="selectAllTenses(true)">Seleziona tutto</button>
+            <button class="btn btn-outline-secondary btn-sm flex-fill" onclick="selectAllTenses(false)">Deseleziona tutto</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: TEST ARENA & DASHBOARD -->
+      <div class="col-lg-7 col-xl-8">
+        
+        <!-- DASHBOARD STATS -->
+        <div class="card card-custom p-3 mb-4">
+          <div class="row g-2 align-items-center">
+            <div class="col-6 col-sm-3">
+              <div class="stat-box">
+                <span class="small text-muted d-block text-uppercase">Risposte</span>
+                <span class="stat-value text-dark" id="statAnswered">0 / 15</span>
+              </div>
+            </div>
+            <div class="col-6 col-sm-3">
+              <div class="stat-box">
+                <span class="small text-muted d-block text-uppercase">Esatte</span>
+                <span class="stat-value text-success" id="statCorrect">0</span>
+              </div>
+            </div>
+            <div class="col-6 col-sm-3">
+              <div class="stat-box">
+                <span class="small text-muted d-block text-uppercase">Errate</span>
+                <span class="stat-value text-danger" id="statWrong">0</span>
+              </div>
+            </div>
+            <div class="col-6 col-sm-3">
+              <div class="stat-box">
+                <span class="small text-muted d-block text-uppercase">Voto Medio</span>
+                <span class="stat-value text-primary" id="statScore">-</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MAIN QUESTION CARD -->
+        <div class="card card-custom p-4 mb-4 text-center">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <span class="badge bg-primary fs-6" id="badgeDirection">Latino ➔ Italiano</span>
+            <div id="clockContainer">
+              <span class="clock-badge clock-normal" id="timerDisplay">--:--</span>
+            </div>
+          </div>
+
+          <!-- PROPOSED VERB FORM -->
+          <div class="py-3">
+            <span class="text-uppercase small text-muted fw-bold d-block mb-1" id="promptLabel">Voce da tradurre</span>
+            <div class="verb-display font-latin my-2" id="verbPrompt">Seleziona i tempi e clicca "Nuova Domanda"</div>
+            <div class="clue-display" id="verbClue">&nbsp;</div>
+          </div>
+
+          <!-- INPUT FORM -->
+          <div class="max-w-md mx-auto my-3" style="max-width: 500px;">
+            <div class="input-group input-group-lg mb-3">
+              <input type="text" id="userInput" class="form-control text-center fw-semibold" placeholder="Scrivi qui la traduzione..." autocomplete="off" disabled onkeydown="handleKeyPress(event)">
+              <button class="btn btn-warning px-4 fw-bold" id="btnCheck" onclick="checkAnswer()" disabled>
+                <i class="fa-solid fa-check me-1"></i> Verifica
+              </button>
+            </div>
+            
+            <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-3">
+              <button class="btn btn-success btn-lg px-4 fw-bold" id="btnNext" onclick="nextQuestion()">
+                <i class="fa-solid fa-play me-2"></i> Nuova Domanda <small class="fw-normal opacity-75">(Spazio)</small>
+              </button>
+              <button class="btn btn-info btn-lg text-white px-4 fw-bold" id="btnEvaluation" onclick="showEvaluationModal()" disabled>
+                <i class="fa-solid fa-award me-2"></i> Valutazione Finale
+              </button>
+            </div>
+          </div>
+
+          <!-- FEEDBACK MESSAGE AREA -->
+          <div id="feedbackContainer" class="mt-3 text-start d-none"></div>
+        </div>
+
+        <!-- CREDITS FOOTER CARD -->
+        <div class="text-center py-3 text-muted small">
+          <p class="mb-1 fw-semibold">Sviluppato sul modello originale del <strong>prof. Giuseppe Frappa</strong> (poesialatina.it)</p>
+          <p class="mb-0">Versione estesa e aggiornata per esercitazione interattiva di Latino • "Grazie prof. Giuseppe Frappa"</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ISTRUZIONI -->
+  <div class="modal fade" id="modalHelp" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header modal-header-custom">
+          <h5 class="modal-title font-latin"><i class="fa-solid fa-graduation-cap me-2"></i>Istruzioni del Test</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <h6>Come svolgere l'esercizio:</h6>
+          <ol class="lh-lg">
+            <li><strong>Configurazione:</strong> Scegli la direzione della traduzione (Latino ➔ Italiano, Italiano ➔ Latino o Mista), il numero di quesiti (da 10 a illimitati) e attiva le coniugazioni e i tempi su cui desideri esercitarti.</li>
+            <li><strong>Avvio:</strong> Clicca sul pulsante <span class="badge bg-success">Nuova Domanda</span> oppure premi la <strong>Barra Spaziatrice</strong> da tastiera.</li>
+            <li><strong>Traduzione:</strong>
+              <ul>
+                <li>Nelle forme di <i>modo finito</i>, esprimi sempre il <strong>pronome soggetto</strong> (es. <i>io amo</i>, <i>tu avevi letto</i>). Per l'imperativo il pronome segue il verbo o può essere sottointeso.</li>
+                <li>Per il <strong>Perfetto indicativo latino</strong> sono riconosciuti validi sia il Passato Prossimo, sia il Passato Remoto che il Trapassato Remoto.</li>
+                <li>Per l'<strong>Imperfetto e Piuccheperfetto Congiuntivo</strong> sono accettati sia i corrispondenti tempi del congiuntivo che i condizionali (presente e passato).</li>
+              </ul>
+            </li>
+            <li><strong>Invio:</strong> Digita la risposta e premi <strong>Invio</strong> da tastiera oppure clicca su <span class="badge bg-warning text-dark">Verifica</span>.</li>
+            <li><strong>Valutazione:</strong> Dopo aver affrontato almeno 5 domande potrai accedere al prospetto analitico con il voto finale in decimi e il giudizio.</li>
+          </ol>
+          <div class="alert alert-info mb-0">
+            <strong>Nota di merito:</strong> "Un sentito ringraziamento al prof. Giuseppe Frappa per l'ispirazione didattica e la struttura metodologica del test."
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: VALUTAZIONE FINALE -->
+  <div class="modal fade" id="modalValutazione" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header modal-header-custom">
+          <h5 class="modal-title font-latin"><i class="fa-solid fa-certificate me-2"></i>Valutazione e Prospetto Analitico</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-4" id="valutazioneContent">
+          <!-- Popolated by JS -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+          <button type="button" class="btn btn-primary" onclick="window.print()"><i class="fa-solid fa-print me-1"></i> Stampa Scheda</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: AREA DOCENTE / LOGIN -->
+  <div class="modal fade" id="modalAdmin" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-dark text-white">
+          <h5 class="modal-title"><i class="fa-solid fa-user-gear me-2"></i>Area Docente - Gestione Verbi</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-4">
+          
+          <div id="adminAuthSection">
+            <div class="max-w-md mx-auto text-center py-4" style="max-width: 400px;">
+              <i class="fa-solid fa-lock fs-1 text-secondary mb-3"></i>
+              <h5 class="fw-bold">Accesso Protetto</h5>
+              <p class="text-muted small">Inserisci la password docente per gestire il vocabolario di verbi.</p>
+              <div class="input-group mb-3">
+                <input type="password" id="adminPasswordInput" class="form-control" placeholder="Password docente..." onkeydown="if(event.key==='Enter') verifyAdminPassword()">
+                <button class="btn btn-primary" onclick="verifyAdminPassword()">Accedi</button>
+              </div>
+              <div id="adminAuthError" class="text-danger small d-none">Password errata! Riprova.</div>
+            </div>
+          </div>
+
+          <div id="adminDashboardSection" class="d-none">
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+              <h6 class="fw-bold mb-0">Vocabolario Verbi Attuale (<span id="adminVerbCount">0</span> verbi)</h6>
+              <div class="btn-group flex-wrap">
+                <button class="btn btn-sm btn-outline-success" onclick="showAddVerbForm()"><i class="fa-solid fa-plus me-1"></i> Aggiungi Verbo</button>
+                <button class="btn btn-sm btn-outline-primary" onclick="exportVerbsJson()"><i class="fa-solid fa-download me-1"></i> Esporta JSON</button>
+                <button class="btn btn-sm btn-outline-info" onclick="triggerImportJson()"><i class="fa-solid fa-upload me-1"></i> Importa JSON</button>
+                <button class="btn btn-sm btn-outline-danger" onclick="resetDefaultVerbs()"><i class="fa-solid fa-rotate-left me-1"></i> Ripristina Predefiniti</button>
+              </div>
+              <input type="file" id="importJsonInput" class="d-none" accept=".json" onchange="importVerbsJson(event)">
+            </div>
+
+            <!-- VERB ADD/EDIT FORM CONTAINER -->
+            <div id="verbFormContainer" class="card bg-light p-3 mb-3 d-none">
+              <h6 class="fw-bold text-primary mb-2" id="verbFormTitle">Nuovo Verbo</h6>
+              <div class="row g-2">
+                <div class="col-md-2">
+                  <label class="form-label small mb-1">Coniugazione</label>
+                  <select id="vFormConj" class="form-select form-select-sm">
+                    <option value="1">1ª (-are)</option>
+                    <option value="2">2ª (-ēre)</option>
+                    <option value="3">3ª (-ere)</option>
+                    <option value="3io">3ª in -io</option>
+                    <option value="4">4ª (-ire)</option>
+                  </select>
+                </div>
+                <div class="col-md-2">
+                  <label class="form-label small mb-1">Pres. 1ª pers. (pres1)</label>
+                  <input type="text" id="vFormPres1" class="form-control form-control-sm" placeholder="es. laudo">
+                </div>
+                <div class="col-md-2">
+                  <label class="form-label small mb-1">Pres. 2ª pers. (pres2)</label>
+                  <input type="text" id="vFormPres2" class="form-control form-control-sm" placeholder="es. laudas">
+                </div>
+                <div class="col-md-2">
+                  <label class="form-label small mb-1">Perfetto 1ª (perf1)</label>
+                  <input type="text" id="vFormPerf1" class="form-control form-control-sm" placeholder="es. laudavi">
+                </div>
+                <div class="col-md-2">
+                  <label class="form-label small mb-1">Supino (supine)</label>
+                  <input type="text" id="vFormSupine" class="form-control form-control-sm" placeholder="es. laudatum">
+                </div>
+                <div class="col-md-2">
+                  <label class="form-label small mb-1">Infinito Lat. (inf)</label>
+                  <input type="text" id="vFormInfLat" class="form-control form-control-sm" placeholder="es. laudare">
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label small mb-1">Infinito Ita (italian)</label>
+                  <input type="text" id="vFormInfIta" class="form-control form-control-sm" placeholder="es. lodare">
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label small mb-1">Participio Passato Ita (italianPp)</label>
+                  <input type="text" id="vFormPartIta" class="form-control form-control-sm" placeholder="es. lodato">
+                </div>
+                <div class="col-md-4 d-flex align-items-end justify-content-end gap-2">
+                  <button class="btn btn-secondary btn-sm" onclick="hideVerbForm()">Annulla</button>
+                  <button class="btn btn-primary btn-sm" onclick="saveVerbFromForm()">Salva Verbo</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- TABLE OF VERBS -->
+            <div class="table-responsive" style="max-height: 350px; overflow-y: auto;">
+              <table class="table table-sm table-hover align-middle small">
+                <thead class="table-dark sticky-top">
+                  <tr>
+                    <th>Conj.</th>
+                    <th>Paradigma Latino (pres1, pres2, perf1, supine, inf)</th>
+                    <th>Traduzione Ita</th>
+                    <th>Part. Passato</th>
+                    <th class="text-center">Azioni</th>
+                  </tr>
+                </thead>
+                <tbody id="adminVerbTableBody">
+                  <!-- Generated by JS -->
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap 5 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- JAVASCRIPT ENGINE -->
+  <script>
+    // ==========================================
+    // DEFAULT VERB DATABASE MATCHING EXACT JSON FORMAT
+    // ==========================================
+    const DEFAULT_VERBS = [
+      { id: "v1", pres1: "laudo", pres2: "laudas", perf1: "laudavi", supine: "laudatum", inf: "laudare", italian: "lodare", italianPp: "lodato", conj: "1" },
+      { id: "v2", pres1: "moneo", pres2: "mones", perf1: "monui", supine: "monitum", inf: "monere", italian: "ammonire", italianPp: "ammonito", conj: "2" },
+      { id: "v3", pres1: "lego", pres2: "legis", perf1: "legi", supine: "lectum", inf: "legere", italian: "leggere", italianPp: "letto", conj: "3" },
+      { id: "v4", pres1: "capio", pres2: "capis", perf1: "cepi", supine: "captum", inf: "capere", italian: "prendere", italianPp: "preso", conj: "3m" },
+      { id: "v5", pres1: "audio", pres2: "audis", perf1: "audivi", supine: "auditum", inf: "audire", italian: "ascoltare", italianPp: "ascoltato", conj: "4" },
+      { id: "v6", pres1: "amo", pres2: "amas", perf1: "amavi", supine: "amatum", inf: "amare", italian: "amare", italianPp: "amato", conj: "1" },
+      { id: "v7", pres1: "habeo", pres2: "habes", perf1: "habui", supine: "habitum", inf: "habere", italian: "avere", italianPp: "avuto", conj: "2" },
+      { id: "v8", pres1: "duco", pres2: "ducis", perf1: "duxi", supine: "ductum", inf: "ducere", italian: "condurre", italianPp: "condotto", conj: "3" },
+      { id: "v9", pres1: "facio", pres2: "facis", perf1: "feci", supine: "factum", inf: "facere", italian: "fare", italianPp: "fatto", conj: "3m" },
+      { id: "v10", pres1: "venio", pres2: "venis", perf1: "veni", supine: "ventum", inf: "venire", italian: "venire", italianPp: "venuto", conj: "4" },
+      { id: "v11", pres1: "voco", pres2: "vocas", perf1: "vocavi", supine: "vocatum", inf: "vocare", italian: "chiamare", italianPp: "chiamato", conj: "1" },
+      { id: "v12", pres1: "doceo", pres2: "doces", perf1: "docui", supine: "doctum", inf: "docere", italian: "insegnare", italianPp: "insegnato", conj: "2" },
+      { id: "v13", pres1: "mitto", pres2: "mittis", perf1: "misi", supine: "missum", inf: "mittere", italian: "inviare", italianPp: "inviato", conj: "3" },
+      { id: "v14", pres1: "punio", pres2: "punis", perf1: "punivi", supine: "punitum", inf: "punire", italian: "punire", italianPp: "punito", conj: "4" },
+      { id: "v15", pres1: "timeo", pres2: "times", perf1: "timui", supine: "", inf: "timere", italian: "temere", italianPp: "temuto", conj: "2" }
+    ];
+
+    let verbDatabase = [];
+
+    // Pronouns in Italian & Latin
+    const PRONOUNS_ITA = ["io", "tu", "egli", "noi", "voi", "essi"];
+    const PRONOUNS_LAT = ["ego", "tu", "ille", "nos", "vos", "illi"];
+
+    // State Variables
+    let currentQuestion = null;
+    let questionsTotal = 15;
+    let answeredCount = 0;
+    let correctCount = 0;
+    let wrongCount = 0;
+    let scoreSum = 0;
+    let history = [];
+    
+    let timerDuration = 35;
+    let timerInterval = null;
+    let timeRemaining = 0;
+    let timeElapsed = 0;
+
+    let currentEditingVerbId = null;
+
+    // Load Database from LocalStorage
+    function loadVerbDatabase() {
+      const stored = localStorage.getItem('frappa_latin_verbs_db');
+      if (stored) {
+        try {
+          verbDatabase = JSON.parse(stored);
+        } catch (e) {
+          verbDatabase = [...DEFAULT_VERBS];
+        }
+      } else {
+        verbDatabase = [...DEFAULT_VERBS];
+      }
+    }
+
+    function saveVerbDatabase() {
+      localStorage.setItem('frappa_latin_verbs_db', JSON.stringify(verbDatabase));
+    }
+
+    // ==========================================
+    // ITALIAN CONJUGATION ENGINE
+    // ==========================================
+    function conjugateItalian(itInf, itPart, mode, tense, voice, person) {
+      if (!itInf) return [""];
+      let stem = itInf.replace(/(are|ere|ire)$/, '');
+      let endingType = itInf.slice(-3); // 'are', 'ere', 'ire'
+      let part = itPart || (endingType === 'are' ? stem + 'ato' : endingType === 'ere' ? stem + 'uto' : stem + 'ito');
+
+      let forms = [];
+
+      // Helper for auxiliary "essere"
+      const essPres = ["sono", "sei", "è", "siamo", "siete", "sono"];
+      const essImpf = ["ero", "eri", "era", "eravamo", "eravate", "erano"];
+      const essPassRem = ["fui", "fosti", "fu", "fummo", "foste", "furono"];
+      const essFut = ["sarò", "sarai", "sarà", "saremo", "sarete", "saranno"];
+      const essSubPres = ["sia", "sia", "sia", "siamo", "siate", "siano"];
+      const essSubImpf = ["fossi", "fossi", "fosse", "fossimo", "foste", "fossero"];
+      const essCondPres = ["sarei", "saresti", "sarebbe", "saremmo", "sareste", "sarebbero"];
+
+      // Helper for auxiliary "avere"
+      const avPres = ["ho", "hai", "ha", "abbiamo", "avete", "hanno"];
+      const avImpf = ["avevo", "avevi", "aveva", "avevamo", "avevate", "avevano"];
+      const avPassRem = ["ebbi", "avesti", "ebbe", "avemmo", "aveste", "ebbero"];
+      const avFut = ["avrò", "avrai", "avrà", "avremo", "avrete", "avranno"];
+      const avSubPres = ["abbia", "abbia", "abbia", "abbiamo", "abbiate", "abbiano"];
+      const avSubImpf = ["avessi", "avessi", "avesse", "avessimo", "aveste", "avessero"];
+      const avCondPres = ["avrei", "avresti", "avrebbe", "avremmo", "avreste", "avrebbero"];
+
+      if (voice === 'pass') {
+        // Passive Voice in Italian
+        let pGender = (person < 3) ? part.replace(/o$/, 'o') : part.replace(/o$/, 'i');
+        if (mode === 'ind') {
+          if (tense === 'pres') forms.push(essPres[person] + " " + pGender);
+          else if (tense === 'impf') forms.push(essImpf[person] + " " + pGender);
+          else if (tense === 'perf') forms.push(essPassRem[person] + " " + pGender, essPres[person] + " stato/a " + pGender);
+          else if (tense === 'plup') forms.push(essImpf[person] + " stato/a " + pGender);
+          else if (tense === 'fut') forms.push(essFut[person] + " " + pGender);
+          else if (tense === 'futp') forms.push(essFut[person] + " stato/a " + pGender);
+        } else if (mode === 'sub') {
+          if (tense === 'pres') forms.push("che " + PRONOUNS_ITA[person] + " " + essSubPres[person] + " " + pGender);
+          else if (tense === 'impf') forms.push("che " + PRONOUNS_ITA[person] + " " + essSubImpf[person] + " " + pGender, essCondPres[person] + " " + pGender);
+          else if (tense === 'perf') forms.push("che " + PRONOUNS_ITA[person] + " " + essSubPres[person] + " stato/a " + pGender);
+          else if (tense === 'plup') forms.push("che " + PRONOUNS_ITA[person] + " " + essSubImpf[person] + " stato/a " + pGender);
+        }
+      } else {
+        // Active Voice
+        if (mode === 'ind') {
+          if (tense === 'pres') {
+            let end = (endingType === 'are') ? ["o","i","a","iamo","ate","ano"] :
+                      (endingType === 'ere') ? ["o","i","e","iamo","ete","ono"] : ["o","i","e","iamo","ite","ono"];
+            forms.push(stem + end[person]);
+          } else if (tense === 'impf') {
+            let end = (endingType === 'are') ? ["avo","avi","ava","avamo","avate","avano"] :
+                      (endingType === 'ere') ? ["evo","evi","eva","evamo","evate","evano"] : ["ivo","ivi","iva","ivamo","ivate","ivano"];
+            forms.push(stem + end[person]);
+          } else if (tense === 'perf') {
+            // Perfetto: Passato remoto AND Passato prossimo AND Trapassato remoto
+            let endRem = (endingType === 'are') ? ["ai","asti","ò","ammo","aste","arono"] :
+                         (endingType === 'ere') ? ["ei","esti","è","emmo","este","erono"] : ["ii","isti","ì","immo","iste","irono"];
+            forms.push(stem + endRem[person]); // Remoto
+            forms.push(avPres[person] + " " + part); // Prossimo
+            forms.push(avPassRem[person] + " " + part); // Trapassato remoto
+          } else if (tense === 'plup') {
+            forms.push(avImpf[person] + " " + part);
+          } else if (tense === 'fut') {
+            let endFut = (endingType === 'are' || endingType === 'ere') ? ["erò","erai","erà","eremo","erete","eranno"] : ["irò","irai","irà","iremo","irete","iranno"];
+            forms.push(stem + endFut[person]);
+          } else if (tense === 'futp') {
+            forms.push(avFut[person] + " " + part);
+          }
+        } else if (mode === 'sub') {
+          if (tense === 'pres') {
+            let endSubP = (endingType === 'are') ? ["i","i","i","iamo","iate","ino"] : ["a","a","a","iamo","iate","ano"];
+            forms.push("che " + PRONOUNS_ITA[person] + " " + stem + endSubP[person]);
+          } else if (tense === 'impf') {
+            let endSubI = (endingType === 'are') ? ["assi","assi","asse","assimo","aste","assero"] :
+                          (endingType === 'ere') ? ["essi","essi","esse","essimo","este","essero"] : ["issi","issi","isse","issimo","iste","issero"];
+            let condEnd = (endingType === 'are' || endingType === 'ere') ? ["erei","eresti","erebbe","eremmo","ereste","erebbero"] : ["irei","iresti","irebbe","iremmo","ireste","irebbero"];
+            
+            forms.push("che " + PRONOUNS_ITA[person] + " " + stem + endSubI[person]);
+            forms.push(stem + condEnd[person]); // Accept Condizionale Presente
+          } else if (tense === 'perf') {
+            forms.push("che " + PRONOUNS_ITA[person] + " " + avSubPres[person] + " " + part);
+          } else if (tense === 'plup') {
+            forms.push("che " + PRONOUNS_ITA[person] + " " + avSubImpf[person] + " " + part);
+            forms.push(avCondPres[person] + " " + part); // Accept Condizionale Passato
+          }
+        } else if (mode === 'imp') {
+          if (person === 1) forms.push(stem + (endingType === 'are' ? 'a' : 'i'));
+          else if (person === 4) forms.push(stem + (endingType === 'are' ? 'ate' : endingType === 'ere' ? 'ete' : 'ite'));
+          else forms.push(stem + "i");
+        } else if (mode === 'inf') {
+          if (tense === 'pres') forms.push(itInf);
+          else if (tense === 'perf') forms.push("avere " + part);
+          else forms.push("stare per " + itInf);
+        } else if (mode === 'part') {
+          if (tense === 'pres') forms.push(stem + (endingType === 'are' ? 'ante' : 'ente'));
+          else if (tense === 'perf') forms.push(part);
+          else forms.push("che sta per " + itInf);
+        } else if (mode === 'nominal') {
+          forms.push(itInf);
+          forms.push("di " + itInf);
+          forms.push("a " + itInf);
+          forms.push("da " + itInf);
+        }
+      }
+
+      if (forms.length === 0) forms.push(itInf);
+      return forms;
+    }
+
+    // ==========================================
+    // LATIN CONJUGATION ENGINE
+    // ==========================================
+    function conjugateLatin(verb, mode, tense, voice, person) {
+      let conj = verb.conj;
+      let presInf = verb.inf || verb.presInf;
+      let presStem = presInf.slice(0, -3);
+      let perfStem = verb.perf1 ? verb.perf1.slice(0, -1) : presStem + "v";
+      let supStem = (verb.supine && verb.supine !== '-') ? verb.supine.slice(0, -2) : presStem + "at";
+
+      let res = "";
+
+      if (mode === 'ind') {
+        if (tense === 'pres') {
+          if (voice === 'act') {
+            const ends = {
+              '1': ["o", "as", "at", "amus", "atis", "ant"],
+              '2': ["eo", "es", "et", "emus", "etis", "ent"],
+              '3': ["o", "is", "it", "imus", "itis", "unt"],
+              '3io': ["io", "is", "it", "imus", "itis", "iunt"],
+              '4': ["io", "is", "it", "imus", "itis", "iunt"]
+            };
+            res = presStem + ends[conj][person];
+          } else {
+            const ends = {
+              '1': ["or", "aris", "atur", "amur", "amini", "antur"],
+              '2': ["eor", "eris", "etur", "emur", "emini", "entur"],
+              '3': ["or", "eris", "itur", "imur", "imini", "untur"],
+              '3io': ["ior", "eris", "itur", "imur", "imini", "iuntur"],
+              '4': ["ior", "iris", "itur", "imur", "imini", "iuntur"]
+            };
+            res = presStem + ends[conj][person];
+          }
+        } else if (tense === 'impf') {
+          if (voice === 'act') {
+            const ends = {
+              '1': "abam", '2': "ebam", '3': "ebam", '3io': "iebam", '4': "iebam"
+            };
+            const persEnds = ["", "s", "t", "mus", "tis", "nt"];
+            let base = presStem + ends[conj].slice(0, -1);
+            res = base + persEnds[person];
+            if (person === 0) res = presStem + ends[conj];
+          } else {
+            const ends = {
+              '1': "abar", '2': "ebar", '3': "ebar", '3io': "iebar", '4': "iebar"
+            };
+            const persEnds = ["", "is", "tur", "mur", "mini", "ntur"];
+            let base = presStem + ends[conj].slice(0, -1);
+            res = base + persEnds[person];
+            if (person === 0) res = presStem + ends[conj];
+          }
+        } else if (tense === 'perf') {
+          if (voice === 'act') {
+            const ends = ["i", "isti", "it", "imus", "istis", "erunt"];
+            res = perfStem + ends[person];
+          } else {
+            const aux = ["sum", "es", "est", "sumus", "estis", "sunt"];
+            let p = (person < 3) ? supStem + "us" : supStem + "i";
+            res = p + " " + aux[person];
+          }
+        } else if (tense === 'plup') {
+          if (voice === 'act') {
+            const ends = ["eram", "eras", "erat", "eramus", "eratis", "erant"];
+            res = perfStem + ends[person];
+          } else {
+            const aux = ["eram", "eras", "erat", "eramus", "eratis", "erant"];
+            let p = (person < 3) ? supStem + "us" : supStem + "i";
+            res = p + " " + aux[person];
+          }
+        } else if (tense === 'fut') {
+          if (voice === 'act') {
+            if (conj === '1' || conj === '2') {
+              const ends = ["bo", "bis", "bit", "bimus", "bitis", "bunt"];
+              res = presStem + (conj === '1' ? 'a' : 'e') + ends[person];
+            } else {
+              const ends = ["am", "es", "et", "emus", "etis", "ent"];
+              let prefix = (conj === '3io' || conj === '4') ? presStem + "i" : presStem;
+              res = prefix + ends[person];
+            }
+          } else {
+            if (conj === '1' || conj === '2') {
+              const ends = ["bor", "beris", "bitur", "bimur", "bimini", "buntur"];
+              res = presStem + (conj === '1' ? 'a' : 'e') + ends[person];
+            } else {
+              const ends = ["ar", "eris", "etur", "emur", "emini", "entur"];
+              let prefix = (conj === '3io' || conj === '4') ? presStem + "i" : presStem;
+              res = prefix + ends[person];
+            }
+          }
+        } else if (tense === 'futp') {
+          if (voice === 'act') {
+            const ends = ["ero", "eris", "erit", "erimus", "eritis", "erint"];
+            res = perfStem + ends[person];
+          } else {
+            const aux = ["ero", "eris", "erit", "erimus", "eritis", "erunt"];
+            let p = (person < 3) ? supStem + "us" : supStem + "i";
+            res = p + " " + aux[person];
+          }
+        }
+      } else if (mode === 'sub') {
+        if (tense === 'pres') {
+          if (voice === 'act') {
+            const vowels = { '1': 'e', '2': 'ea', '3': 'a', '3io': 'ia', '4': 'ia' };
+            const ends = ["m", "s", "t", "mus", "tis", "nt"];
+            res = presStem + vowels[conj] + ends[person];
+          } else {
+            const vowels = { '1': 'e', '2': 'ea', '3': 'a', '3io': 'ia', '4': 'ia' };
+            const ends = ["r", "ris", "tur", "mur", "mini", "ntur"];
+            res = presStem + vowels[conj] + ends[person];
+          }
+        } else if (tense === 'impf') {
+          let base = presInf;
+          if (voice === 'act') {
+            const ends = ["m", "s", "t", "mus", "tis", "nt"];
+            res = base + ends[person];
+          } else {
+            const ends = ["r", "ris", "tur", "mur", "mini", "ntur"];
+            res = base + ends[person];
+          }
+        } else if (tense === 'perf') {
+          if (voice === 'act') {
+            const ends = ["erim", "eris", "erit", "erimus", "eritis", "erint"];
+            res = perfStem + ends[person];
+          } else {
+            const aux = ["sim", "sis", "sit", "simus", "sitis", "sint"];
+            let p = (person < 3) ? supStem + "us" : supStem + "i";
+            res = p + " " + aux[person];
+          }
+        } else if (tense === 'plup') {
+          if (voice === 'act') {
+            const ends = ["issem", "isses", "isset", "issemus", "issetis", "issent"];
+            res = perfStem + ends[person];
+          } else {
+            const aux = ["essem", "esses", "esset", "essemus", "essetis", "essent"];
+            let p = (person < 3) ? supStem + "us" : supStem + "i";
+            res = p + " " + aux[person];
+          }
+        }
+      } else if (mode === 'imp') {
+        if (person === 1) res = (conj === '1') ? presStem + "a" : (conj === '2') ? presStem + "e" : (conj === '3') ? presStem + "e" : (conj === '3io') ? presStem + "e" : presStem + "i";
+        else res = (conj === '1') ? presStem + "ate" : (conj === '2') ? presStem + "ete" : (conj === '3') ? presStem + "ite" : (conj === '3io') ? presStem + "ite" : presStem + "ite";
+      } else if (mode === 'inf') {
+        if (voice === 'act') res = presInf;
+        else res = (conj === '3' || conj === '3io') ? presStem + "i" : presInf.slice(0, -1) + "i";
+      } else if (mode === 'part') {
+        res = presStem + (conj === '1' ? 'ans' : 'ens');
+      } else if (mode === 'nominal') {
+        res = presStem + (conj === '1' ? 'andi' : 'endi');
+      }
+
+      return res || presInf;
+    }
+
+    // Grammar label formatter
+    function getGrammarDescription(mode, tense, voice, person) {
+      const modeNames = { ind: "indicativo", sub: "congiuntivo", imp: "imperativo", inf: "infinito", part: "participio", nominal: "gerundio" };
+      const tenseNames = { pres: "presente", impf: "imperfetto", perf: "perfetto", plup: "piuccheperfetto", fut: "futuro semplice", futp: "futuro anteriore", all: "" };
+      const persNames = ["1ª pers. sing.", "2ª pers. sing.", "3ª pers. sing.", "1ª pers. plur.", "2ª pers. plur.", "3ª pers. plur."];
+
+      let voiceStr = voice === 'pass' ? "passivo" : "attivo";
+      let pStr = (mode === 'ind' || mode === 'sub' || mode === 'imp') ? persNames[person] : "";
+
+      return `${pStr} del ${tenseNames[tense] || ''} ${modeNames[mode] || ''} ${voiceStr}`.replace(/\s+/g, ' ').trim();
+    }
+
+    // Format verb paradigm for display
+    function formatParadigm(verb) {
+      let pres1 = verb.pres1 || "";
+      let pres2 = verb.pres2 || "";
+      let perf1 = verb.perf1 || "";
+      let supine = verb.supine || "";
+      let inf = verb.inf || verb.presInf || "";
+      let it = verb.italian || verb.itInf || "";
+      
+      let items = [pres1, pres2, perf1, supine, inf].filter(x => x && x !== '-');
+      return `${items.join(', ')} = "${it}"`;
+    }
+
+    // Normalize text for flexible matching
+    function normalize(str) {
+      if (!str) return "";
+      return str.toLowerCase()
+        .trim()
+        .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "")
+        .replace(/\s+/g, " ");
+    }
+
+    // Get Active Conjugation Selection
+    function getSelectedConjugations() {
+      let conjs = [];
+      document.querySelectorAll('.chk-conj:checked').forEach(c => conjs.push(c.value));
+      return conjs;
+    }
+
+    // Get Selected Tenses
+    function getSelectedTenses() {
+      let selected = [];
+      document.querySelectorAll('.chk-tense:checked').forEach(chk => {
+        selected.push({
+          mode: chk.dataset.mode,
+          tense: chk.dataset.tense,
+          voice: chk.dataset.voice
+        });
+      });
+      return selected;
+    }
+
+    function selectAllTenses(status) {
+      document.querySelectorAll('.chk-tense').forEach(chk => chk.checked = status);
+      updateSettings();
+    }
+
+    function onConjChange() {
+      if (getSelectedConjugations().length === 0) {
+        document.getElementById('conj1').checked = true;
+      }
+      updateSettings();
+    }
+
+    function updateSettings() {
+      questionsTotal = parseInt(document.getElementById('numQuestions').value);
+      timerDuration = parseInt(document.getElementById('timerConfig').value);
+      updateStatsUI();
+    }
+
+    // ==========================================
+    // EXERCISE & QUESTION LOGIC
+    // ==========================================
+    function nextQuestion() {
+      const activeConjs = getSelectedConjugations();
+      const activeTenses = getSelectedTenses();
+
+      if (activeConjs.length === 0) {
+        alert("Seleziona almeno una coniugazione!");
+        return;
+      }
+      if (activeTenses.length === 0) {
+        alert("Seleziona almeno un tempo o modo verbale!");
+        return;
+      }
+
+      // Filter verbs by chosen conjugations
+      const poolVerbs = verbDatabase.filter(v => activeConjs.includes(v.conj));
+      if (poolVerbs.length === 0) {
+        alert("Nessun verbo disponibile per le coniugazioni selezionate!");
+        return;
+      }
+
+      const randomVerb = poolVerbs[Math.floor(Math.random() * poolVerbs.length)];
+      const randomTenseConfig = activeTenses[Math.floor(Math.random() * activeTenses.length)];
+      const randomPerson = Math.floor(Math.random() * 6);
+
+      // Direction
+      const dirMode = document.querySelector('input[name="direction"]:checked').value;
+      let effectiveDir = dirMode;
+      if (dirMode === 'MIXED') {
+        effectiveDir = Math.random() < 0.5 ? 'LAT_IT' : 'IT_LAT';
+      }
+
+      // Generate Latin & Italian
+      const latForm = conjugateLatin(randomVerb, randomTenseConfig.mode, randomTenseConfig.tense, randomTenseConfig.voice, randomPerson);
+      const itInf = randomVerb.italian || randomVerb.itInf;
+      const itPart = randomVerb.italianPp || randomVerb.itPart;
+      const itaForms = conjugateItalian(itInf, itPart, randomTenseConfig.mode, randomTenseConfig.tense, randomTenseConfig.voice, randomPerson);
+      const descr = getGrammarDescription(randomTenseConfig.mode, randomTenseConfig.tense, randomTenseConfig.voice, randomPerson);
+
+      currentQuestion = {
+        verb: randomVerb,
+        direction: effectiveDir,
+        tenseConfig: randomTenseConfig,
+        person: randomPerson,
+        latinForm: latForm,
+        italianForms: itaForms,
+        grammarDesc: descr
+      };
+
+      // Render Question UI
+      document.getElementById('feedbackContainer').classList.add('d-none');
+      document.getElementById('userInput').value = '';
+      document.getElementById('userInput').disabled = false;
+      document.getElementById('btnCheck').disabled = false;
+      document.getElementById('btnNext').disabled = true;
+      document.getElementById('userInput').focus();
+
+      let paradigmStr = formatParadigm(randomVerb);
+
+      if (effectiveDir === 'LAT_IT') {
+        document.getElementById('badgeDirection').innerText = "Latino ➔ Italiano";
+        document.getElementById('promptLabel').innerText = "Traduci in Italiano la seguente voce latina:";
+        document.getElementById('verbPrompt').innerText = (randomTenseConfig.mode === 'ind' || randomTenseConfig.mode === 'sub') ? `${PRONOUNS_LAT[randomPerson]} ${latForm}` : latForm;
+        document.getElementById('verbClue').innerText = `Paradigma: ${paradigmStr}`;
+      } else {
+        document.getElementById('badgeDirection').innerText = "Italiano ➔ Latino";
+        document.getElementById('promptLabel').innerText = "Traduci in Latino la seguente voce italiana:";
+        document.getElementById('verbPrompt').innerText = (randomTenseConfig.mode === 'ind' || randomTenseConfig.mode === 'sub') ? `${PRONOUNS_ITA[randomPerson]} ${itaForms[0]}` : itaForms[0];
+        document.getElementById('verbClue').innerText = `Paradigma richiesto: ${paradigmStr}`;
+      }
+
+      // Start Timer
+      startTimer();
+    }
+
+    function startTimer() {
+      clearInterval(timerInterval);
+      const display = document.getElementById('timerDisplay');
+      
+      if (timerDuration === 0) {
+        display.innerText = "∞";
+        display.className = "clock-badge clock-normal";
+        return;
+      }
+
+      timeRemaining = timerDuration;
+      timeElapsed = 0;
+      updateTimerUI();
+
+      timerInterval = setInterval(() => {
+        timeRemaining--;
+        timeElapsed++;
+        updateTimerUI();
+
+        if (timeRemaining <= 0) {
+          clearInterval(timerInterval);
+          onTimeOut();
+        }
+      }, 1000);
+    }
+
+    function updateTimerUI() {
+      const display = document.getElementById('timerDisplay');
+      if (timerDuration === 0) return;
+
+      display.innerText = `00:${timeRemaining < 10 ? '0' : ''}${timeRemaining}`;
+      if (timeRemaining > 15) {
+        display.className = "clock-badge clock-normal";
+      } else if (timeRemaining > 5) {
+        display.className = "clock-badge clock-warning";
+      } else {
+        display.className = "clock-badge clock-danger";
+      }
+    }
+
+    function onTimeOut() {
+      document.getElementById('userInput').disabled = true;
+      document.getElementById('btnCheck').disabled = true;
+      document.getElementById('btnNext').disabled = false;
+
+      recordResult(false, 0, "Tempo Scaduto!");
+    }
+
+    function handleKeyPress(e) {
+      if (e.key === 'Enter' && !document.getElementById('btnCheck').disabled) {
+        checkAnswer();
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' && document.activeElement.tagName !== 'INPUT') {
+        e.preventDefault();
+        if (!document.getElementById('btnNext').disabled) {
+          nextQuestion();
+        }
+      }
+    });
+
+    function checkAnswer() {
+      if (!currentQuestion) return;
+
+      clearInterval(timerInterval);
+      document.getElementById('userInput').disabled = true;
+      document.getElementById('btnCheck').disabled = true;
+      document.getElementById('btnNext').disabled = false;
+
+      const userRaw = document.getElementById('userInput').value;
+      const userNorm = normalize(userRaw);
+
+      let isCorrect = false;
+
+      if (currentQuestion.direction === 'LAT_IT') {
+        // Checking Italian input
+        for (let form of currentQuestion.italianForms) {
+          let normForm = normalize(form);
+          let normWithPronoun = normalize(`${PRONOUNS_ITA[currentQuestion.person]} ${form}`);
+          
+          if (userNorm === normForm || userNorm === normWithPronoun) {
+            isCorrect = true;
+            break;
+          }
+        }
+      } else {
+        // Checking Latin input
+        let normLat = normalize(currentQuestion.latinForm);
+        let normLatPron = normalize(`${PRONOUNS_LAT[currentQuestion.person]} ${currentQuestion.latinForm}`);
+        
+        if (userNorm === normLat || userNorm === normLatPron) {
+          isCorrect = true;
+        }
+      }
+
+      // Calculate Score
+      let questionScore = 0;
+      if (isCorrect) {
+        if (timerDuration === 0) questionScore = 10;
+        else if (timeElapsed <= 10) questionScore = 10;
+        else {
+          questionScore = Math.max(5, 10 - Math.floor((timeElapsed - 10) / 2));
+        }
+      }
+
+      recordResult(isCorrect, questionScore, userRaw);
+    }
+
+    function recordResult(isCorrect, questionScore, userRaw) {
+      answeredCount++;
+      if (isCorrect) correctCount++;
+      else wrongCount++;
+
+      scoreSum += questionScore;
+
+      history.push({
+        qNum: answeredCount,
+        prompt: document.getElementById('verbPrompt').innerText,
+        userAns: userRaw,
+        correctAns: currentQuestion.direction === 'LAT_IT' ? currentQuestion.italianForms.join(" / ") : currentQuestion.latinForm,
+        grammar: currentQuestion.grammarDesc,
+        isCorrect: isCorrect,
+        score: questionScore
+      });
+
+      updateStatsUI();
+
+      // Render Feedback
+      const feedback = document.getElementById('feedbackContainer');
+      feedback.classList.remove('d-none');
+
+      let verbIt = currentQuestion.verb.italian || currentQuestion.verb.itInf;
+      let verbParadigm = formatParadigm(currentQuestion.verb);
+
+      if (isCorrect) {
+        feedback.className = "mt-3 result-correct";
+        feedback.innerHTML = `
+          <div class="fw-bold fs-5 mb-1"><i class="fa-solid fa-circle-check me-2"></i>Risposta Esatta! (+${questionScore} punti)</div>
+          <div><strong>${currentQuestion.latinForm}</strong> è ${currentQuestion.grammarDesc} del verbo <em>${verbParadigm}</em>.<div>
+        `;
+      } else {
+        feedback.className = "mt-3 result-wrong";
+        let targetText = currentQuestion.direction === 'LAT_IT' ? currentQuestion.italianForms[0] : currentQuestion.latinForm;
+        feedback.innerHTML = `
+          <div class="fw-bold fs-5 mb-1"><i class="fa-solid fa-circle-xmark me-2"></i>Risposta Errata</div>
+          <div>La traduzione corretta era: <strong class="fs-6">${targetText}</strong></div>
+          <div class="small opacity-75 mt-1">Analisi: <em>${currentQuestion.latinForm}</em> è ${currentQuestion.grammarDesc}.</div>
+        `;
+      }
+
+      if (answeredCount >= 5) {
+        document.getElementById('btnEvaluation').disabled = false;
+      }
+    }
+
+    function updateStatsUI() {
+      let qTotalStr = questionsTotal >= 900 ? '∞' : questionsTotal;
+      document.getElementById('statAnswered').innerText = `${answeredCount} / ${qTotalStr}`;
+      document.getElementById('statCorrect').innerText = correctCount;
+      document.getElementById('statWrong').innerText = wrongCount;
+
+      if (answeredCount > 0) {
+        let avg = (scoreSum / answeredCount).toFixed(1);
+        document.getElementById('statScore').innerText = avg;
+      } else {
+        document.getElementById('statScore').innerText = "-";
+      }
+    }
+
+    // ==========================================
+    // EVALUATION MODAL
+    // ==========================================
+    function showEvaluationModal() {
+      let avgScore = answeredCount > 0 ? (scoreSum / answeredCount).toFixed(1) : "0.0";
+      let percCorrect = answeredCount > 0 ? ((correctCount / answeredCount) * 100).toFixed(1) : "0.0";
+
+      let judgement = "";
+      if (avgScore >= 9) judgement = "Eccellente! Ottima padronanza delle forme verbali.";
+      else if (avgScore >= 8) judgement = "Ottimo lavoro! Conoscenza solida del verbo latino.";
+      else if (avgScore >= 7) judgement = "Buono. Buona preparazione con qualche imprecisione.";
+      else if (avgScore >= 6) judgement = "Sufficiente. La conoscenza di base è presente.";
+      else judgement = "Insufficiente. Si consiglia un ripasso sistematico delle coniugazioni.";
+
+      let tableRows = history.map(h => `
+        <tr>
+          <td><strong>${h.qNum}</strong></td>
+          <td class="font-latin text-primary"><strong>${h.prompt}</strong></td>
+          <td class="small">${h.grammar}</td>
+          <td class="text-success"><strong>${h.correctAns}</strong></td>
+          <td class="${h.isCorrect ? 'text-success' : 'text-danger'}">${h.userAns || '-'}</td>
+          <td class="text-center"><span class="badge ${h.isCorrect ? 'bg-success' : 'bg-danger'}">${h.score}</span></td>
+        </tr>
+      `).join('');
+
+      document.getElementById('valutazioneContent').innerHTML = `
+        <div class="text-center mb-4">
+          <h3 class="font-latin fw-bold text-primary mb-1">Scheda di Valutazione Test Verbi</h3>
+          <p class="text-muted small">Esercitazione di Morfologia Latina • Grazie prof. Giuseppe Frappa</p>
+          <div class="display-4 fw-bold my-2 ${avgScore >= 6 ? 'score-badge-high' : 'score-badge-low'}">${avgScore} / 10</div>
+          <div class="lead fw-semibold text-dark">${judgement}</div>
+        </div>
+
+        <div class="row g-3 mb-4">
+          <div class="col-md-3 text-center">
+            <div class="p-3 bg-light rounded border">
+              <span class="small text-muted d-block">Quesiti Affrontati</span>
+              <strong class="fs-4">${answeredCount}</strong>
+            </div>
+          </div>
+          <div class="col-md-3 text-center">
+            <div class="p-3 bg-light rounded border">
+              <span class="small text-muted d-block">Risposte Esatte</span>
+              <strong class="fs-4 text-success">${correctCount}</strong>
+            </div>
+          </div>
+          <div class="col-md-3 text-center">
+            <div class="p-3 bg-light rounded border">
+              <span class="small text-muted d-block">Risposte Errate</span>
+              <strong class="fs-4 text-danger">${wrongCount}</strong>
+            </div>
+          </div>
+          <div class="col-md-3 text-center">
+            <div class="p-3 bg-light rounded border">
+              <span class="small text-muted d-block">Percentuale Esatte</span>
+              <strong class="fs-4 text-primary">${percCorrect}%</strong>
+            </div>
+          </div>
+        </div>
+
+        <h6 class="fw-bold font-latin mb-2">Dettaglio Quesiti e Risposte:</h6>
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped align-middle">
+            <thead class="table-dark small">
+              <tr>
+                <th>#</th>
+                <th>Voce Proposta</th>
+                <th>Analisi Grammaticale</th>
+                <th>Traduzione Esatta</th>
+                <th>Risposta Data</th>
+                <th class="text-center">Punti</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${tableRows}
+            </tbody>
+          </table>
+        </div>
+      `;
+
+      let myModal = new bootstrap.Modal(document.getElementById('modalValutazione'));
+      myModal.show();
+    }
+
+    function showHelpModal() {
+      let myModal = new bootstrap.Modal(document.getElementById('modalHelp'));
+      myModal.show();
+    }
+
+    // ==========================================
+    // ADMIN / TEACHER AREA (Protected by password "profSCD")
+    // ==========================================
+    function promptAdminLogin() {
+      document.getElementById('adminAuthSection').classList.remove('d-none');
+      document.getElementById('adminDashboardSection').classList.add('d-none');
+      document.getElementById('adminPasswordInput').value = '';
+      document.getElementById('adminAuthError').classList.add('d-none');
+
+      let myModal = new bootstrap.Modal(document.getElementById('modalAdmin'));
+      myModal.show();
+    }
+
+    function verifyAdminPassword() {
+      const pwd = document.getElementById('adminPasswordInput').value;
+      if (pwd === "profSCD") {
+        document.getElementById('adminAuthSection').classList.add('d-none');
+        document.getElementById('adminDashboardSection').classList.remove('d-none');
+        renderAdminVerbTable();
+      } else {
+        document.getElementById('adminAuthError').classList.remove('d-none');
+      }
+    }
+
+    function renderAdminVerbTable() {
+      document.getElementById('adminVerbCount').innerText = verbDatabase.length;
+      const tbody = document.getElementById('adminVerbTableBody');
+      tbody.innerHTML = '';
+
+      verbDatabase.forEach(v => {
+        let pres1 = v.pres1 || "";
+        let pres2 = v.pres2 || "";
+        let perf1 = v.perf1 || "";
+        let supine = v.supine || "";
+        let inf = v.inf || v.presInf || "";
+        let itInf = v.italian || v.itInf || "";
+        let itPp = v.italianPp || v.itPart || "-";
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><span class="badge bg-secondary">${v.conj}ª</span></td>
+          <td class="font-latin"><strong>${pres1}</strong>, ${pres2}, ${perf1}, ${supine || '-'}, ${inf}</td>
+          <td>${itInf}</td>
+          <td>${itPp}</td>
+          <td class="text-center">
+            <button class="btn btn-sm btn-outline-danger py-0 px-2" onclick="deleteVerb('${v.id}')"><i class="fa-solid fa-trash"></i></button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function showAddVerbForm() {
+      currentEditingVerbId = null;
+      document.getElementById('verbFormTitle').innerText = "Aggiungi Nuovo Verbo";
+      document.getElementById('vFormPres1').value = '';
+      document.getElementById('vFormPres2').value = '';
+      document.getElementById('vFormPerf1').value = '';
+      document.getElementById('vFormSupine').value = '';
+      document.getElementById('vFormInfLat').value = '';
+      document.getElementById('vFormInfIta').value = '';
+      document.getElementById('vFormPartIta').value = '';
+      document.getElementById('verbFormContainer').classList.remove('d-none');
+    }
+
+    function hideVerbForm() {
+      document.getElementById('verbFormContainer').classList.add('d-none');
+    }
+
+    function saveVerbFromForm() {
+      const conj = document.getElementById('vFormConj').value;
+      const pres1 = document.getElementById('vFormPres1').value.trim();
+      const pres2 = document.getElementById('vFormPres2').value.trim();
+      const perf1 = document.getElementById('vFormPerf1').value.trim();
+      const supine = document.getElementById('vFormSupine').value.trim();
+      const inf = document.getElementById('vFormInfLat').value.trim();
+      const italian = document.getElementById('vFormInfIta').value.trim();
+      const italianPp = document.getElementById('vFormPartIta').value.trim();
+
+      if (!pres1 || !inf || !italian) {
+        alert("Inserisci almeno la 1ª persona presente (pres1), l'infinito latino (inf) e l'infinito italiano (italian)!");
+        return;
+      }
+
+      const newVerb = {
+        id: "v_" + Date.now(),
+        conj: conj,
+        pres1: pres1,
+        pres2: pres2 || (pres1 + "s"),
+        perf1: perf1 || (pres1 + "vi"),
+        supine: supine || (pres1 + "tum"),
+        inf: inf,
+        italian: italian,
+        italianPp: italianPp || (italian.endsWith('are') ? italian.replace(/are$/, 'ato') : italian.replace(/(ere|ire)$/, 'ito'))
+      };
+
+      verbDatabase.push(newVerb);
+      saveVerbDatabase();
+      hideVerbForm();
+      renderAdminVerbTable();
+    }
+
+    function deleteVerb(id) {
+      if (confirm("Sei sicuro di voler eliminare questo verbo dal vocabolario?")) {
+        verbDatabase = verbDatabase.filter(v => v.id !== id);
+        saveVerbDatabase();
+        renderAdminVerbTable();
+      }
+    }
+
+    function resetDefaultVerbs() {
+      if (confirm("Ripristinare il vocabolario predefinito di verbi? Tutte le modifiche personalizzate andranno perse.")) {
+        verbDatabase = JSON.parse(JSON.stringify(DEFAULT_VERBS));
+        saveVerbDatabase();
+        renderAdminVerbTable();
+      }
+    }
+
+    // ==========================================
+    // IMPORT / EXPORT JSON FUNCTIONALITY
+    // ==========================================
+    function exportVerbsJson() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(verbDatabase, null, 2));
+      const downloadAnchor = document.createElement('a');
+      const filename = `VerbaLatina_Verbs_${new Date().toISOString().slice(0, 10)}.json`;
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", filename);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
+    function triggerImportJson() {
+      document.getElementById('importJsonInput').click();
+    }
+
+    function importVerbsJson(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const imported = JSON.parse(e.target.result);
+          if (Array.isArray(imported) && imported.length > 0) {
+            // Validate basic structure
+            const isValid = imported.every(v => v.pres1 && v.inf && (v.italian || v.itInf));
+            if (!isValid) {
+              alert("Errore: Il file JSON non contiene verbi nel formato richiesto (campi pres1, inf, italian).");
+              return;
+            }
+
+            // Standardize format
+            verbDatabase = imported.map((v, idx) => ({
+              id: v.id || ("v" + (idx + 1)),
+              pres1: v.pres1 || "",
+              pres2: v.pres2 || "",
+              perf1: v.perf1 || "",
+              supine: v.supine || "",
+              inf: v.inf || v.presInf || "",
+              italian: v.italian || v.itInf || "",
+              italianPp: v.italianPp || v.itPart || "",
+              conj: v.conj || "1"
+            }));
+
+            saveVerbDatabase();
+            renderAdminVerbTable();
+            alert(`Importazione completata con successo! Caricati ${verbDatabase.length} verbi.`);
+          } else {
+            alert("Il file JSON caricato non contiene un elenco valido di verbi.");
+          }
+        } catch (err) {
+          alert("Errore nella lettura del file JSON: " + err.message);
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = "";
+    }
+
+    // INIT
+    window.onload = function() {
+      loadVerbDatabase();
+      updateSettings();
+    };
+  </script>
+</body>
+</html>
