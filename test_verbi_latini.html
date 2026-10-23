@@ -615,7 +615,7 @@
     // ==========================================
     // INTERCETTORE VERBI IRREGOLARI ITALIANI
     // ==========================================
-   function gestisciIrregolareItaliano(verbo, modo, tempo, voice, person) {
+ function gestisciIrregolareItaliano(verbo, modo, tempo, voice, person) {
   if (voice === 'pass') return null; // Il passivo usa l'ausiliare "essere" + participio
 
   verbo = verbo.toLowerCase().trim();
@@ -693,57 +693,57 @@
     }
   };
 
-      if (IRREGOLARI[verbo] && IRREGOLARI[verbo][modo] && IRREGOLARI[verbo][modo][tempo]) {
-        return [IRREGOLARI[verbo][modo][tempo][person]];
-      }
+  if (IRREGOLARI[verbo] && IRREGOLARI[verbo][modo] && IRREGOLARI[verbo][modo][tempo]) {
+    return [IRREGOLARI[verbo][modo][tempo][person]];
+  }
 
-      // Regola per verbi contratti in -durre (condurre, produrre, tradurre)
-      if (verbo.endsWith("durre")) {
-        const prefisso = verbo.slice(0, -5);
-        if (modo === "ind") {
-          if (tempo === "pres") {
-            const end = ["duco", "duci", "duce", "duciamo", "ducete", "ducono"];
-            return [prefisso + end[person]];
-          } else if (tempo === "impf") {
-            const end = ["ducevo", "ducevi", "duceva", "ducevamo", "ducevate", "ducevano"];
-            return [prefisso + end[person]];
-          } else if (tempo === "perf") {
-            const end = ["dussi", "ducesti", "dusse", "ducemmo", "duceste", "dussero"];
-            return [prefisso + end[person]];
-          }
-        }
+  // Regola per verbi contratti in -durre (condurre, produrre, tradurre)
+  if (verbo.endsWith("durre")) {
+    const prefisso = verbo.slice(0, -5);
+    if (modo === "ind") {
+      if (tempo === "pres") {
+        const end = ["duco", "duci", "duce", "duciamo", "ducete", "ducono"];
+        return [prefisso + end[person]];
+      } else if (tempo === "impf") {
+        const end = ["ducevo", "ducevi", "duceva", "ducevamo", "ducevate", "ducevano"];
+        return [prefisso + end[person]];
+      } else if (tempo === "perf") {
+        const end = ["dussi", "ducesti", "dusse", "ducemmo", "duceste", "dussero"];
+        return [prefisso + end[person]];
       }
-
-      // Regola per verbi contratti in -porre (comporre, esporre, proporre)
-      if (verbo.endsWith("porre")) {
-        const prefisso = verbo.slice(0, -5);
-        if (modo === "ind") {
-          if (tempo === "pres") {
-            const end = ["pongo", "poni", "pone", "poniamo", "ponete", "pongono"];
-            return [prefisso + end[person]];
-          } else if (tempo === "impf") {
-            const end = ["ponevo", "ponevi", "poneva", "ponevamo", "ponevate", "ponevano"];
-            return [prefisso + end[person]];
-          }
-        }
-      }
-
-      // Regola per verbi contratti in -trarre (estrarre, contrarre, attrarre)
-      if (verbo.endsWith("trarre")) {
-        const prefisso = verbo.slice(0, -6);
-        if (modo === "ind") {
-          if (tempo === "pres") {
-            const end = ["traggo", "trai", "trae", "traiamo", "traete", "traggono"];
-            return [prefisso + end[person]];
-          } else if (tempo === "impf") {
-            const end = ["traevo", "traevi", "traeva", "traevamo", "traevate", "traevano"];
-            return [prefisso + end[person]];
-          }
-        }
-      }
-
-      return null;
     }
+  }
+
+  // Regola per verbi contratti in -porre (comporre, esporre, proporre)
+  if (verbo.endsWith("porre")) {
+    const prefisso = verbo.slice(0, -5);
+    if (modo === "ind") {
+      if (tempo === "pres") {
+        const end = ["pongo", "poni", "pone", "poniamo", "ponete", "pongono"];
+        return [prefisso + end[person]];
+      } else if (tempo === "impf") {
+        const end = ["ponevo", "ponevi", "poneva", "ponevamo", "ponevate", "ponevano"];
+        return [prefisso + end[person]];
+      }
+    }
+  }
+
+  // Regola per verbi contratti in -trarre (estrarre, contrarre, attrarre)
+  if (verbo.endsWith("trarre")) {
+    const prefisso = verbo.slice(0, -6);
+    if (modo === "ind") {
+      if (tempo === "pres") {
+        const end = ["traggo", "trai", "trae", "traiamo", "traete", "traggono"];
+        return [prefisso + end[person]];
+      } else if (tempo === "impf") {
+        const end = ["traevo", "traevi", "traeva", "traevamo", "traevate", "traevano"];
+        return [prefisso + end[person]];
+      }
+    }
+  }
+
+  return null;
+}
 
     // ==========================================
     // ITALIAN CONJUGATION ENGINE
