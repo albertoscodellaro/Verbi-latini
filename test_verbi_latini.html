@@ -615,85 +615,83 @@
     // ==========================================
     // INTERCETTORE VERBI IRREGOLARI ITALIANI
     // ==========================================
-    function gestisciIrregolareItaliano(verbo, modo, tempo, voice, person) {
-      if (voice === 'pass') return null; // Il passivo usa l'ausiliare "essere" + participio
+   function gestisciIrregolareItaliano(verbo, modo, tempo, voice, person) {
+  if (voice === 'pass') return null; // Il passivo usa l'ausiliare "essere" + participio
 
-      verbo = verbo.toLowerCase().trim();
+  verbo = verbo.toLowerCase().trim();
 
-      // Dizionario eccezioni verbi ausiliari e irregolari comuni
-      const IRREGOLARI = {
-        "avere": {
-          ind: {
-            pres: ["ho", "hai", "ha", "abbiamo", "avete", "hanno"],
-            impf: ["avevo", "avevi", "aveva", "avevamo", "avevate", "avevano"],
-            perf: ["ebbi", "avesti", "ebbe", "avemmo", "aveste", "ebbero"]
-          },
-          sub: {
-            pres: ["che io abbia", "che tu abbia", "che egli abbia", "che noi abbiamo", "che voi abbiate", "che essi abbiano"],
-            impf: ["che io avessi", "che tu avessi", "che egli avesse", "che noi avessimo", "che voi aveste", "che essi avessero"]
-          }
-        },
-        "essere": {
-          ind: {
-            pres: ["sono", "sei", "è", "siamo", "siete", "sono"],
-            impf: ["ero", "eri", "era", "eravamo", "eravate", "erano"],
-            perf: ["fui", "fosti", "fu", "fummo", "foste", "furono"]
-          },
-          sub: {
-            pres: ["che io sia", "che tu sia", "che egli sia", "che noi siamo", "che voi siate", "che essi siano"],
-            impf: ["che io fossi", "che tu fossi", "che egli fosse", "che noi fossimo", "che voi foste", "che essi fossero"]
-          }
-        },
-        "fare": {
-          ind: {
-            pres: ["faccio", "fai", "fa", "facciamo", "fate", "fanno"],
-            impf: ["facevo", "facevi", "faceva", "facevamo", "facevate", "facevano"],
-            perf: ["feci", "facesti", "fece", "facemmo", "faceste", "fecero"]
-          }
-        },
-        "dire": {
-          ind: {
-            pres: ["dico", "dici", "dice", "diciamo", "dite", "dicono"],
-            impf: ["dicevo", "dicevi", "diceva", "dicevamo", "dicevate", "dicevano"],
-            perf: ["dissi", "dicesti", "disse", "dicemmo", "diceste", "dissero"]
-          }
-        },
-        "andare": {
-          ind: { pres: ["vado", "vai", "va", "andiamo", "andate", "vanno"] }
-        },
-        "stare": {
-          ind: { pres: ["sto", "stai", "sta", "stiamo", "state", "stanno"] }
-        },
-        "dare": {
-          ind: { pres: ["do", "dai", "da", "diamo", "date", "danno"] }
-        },
-        "venire": {
-          ind: { pres: ["vengo", "vieni", "viene", "veniamo", "venite", "vengono"] }
-        }
-        "punire": {
-          ind: { pres: ["punisco", "punisci", "punisce", "puniamo", "punite", "puniscono"]}
-        "stare" : {
-          ind: { pres: ["sto", "stai", "sta", "stiamo", "state", "stanno"]}
-        }
-          "dovere": {
-          ind: { pres: ["devo", "devi", "deve", "dobbiamo", "dovete", "devono"]}
-          }
-          "rimanere" {
-          ind: { pres: ["rimango", "rimani", "rimane", "rimaniamo", "rimanete", "rimangono"]}
-          }
-          "raccogliere" {
-          ind: { pres: ["raccolgo", "raccogli", "raccoglie", "raccogliamo", "raccogliete", "raccolgono"]}
-          }
-          "rapire" {
-          ind: {pres: ["rapisco", "rapisci", "rapisce", "rapiamo", "rapite", "rapiscono"]}
-          }
-          "sapere" {
-          ind: {pres: ["so", "sai", "sa", "sappiamo", "sapete", "sanno"]}
-          }
-          "capire" {
-          ind: {pres: ["capisco", "capisci", "capisce", "capiamo", "capite", "capiscono"]}
-          }
-      };
+  // Dizionario eccezioni verbi ausiliari e irregolari comuni
+  const IRREGOLARI = {
+    "avere": {
+      ind: {
+        pres: ["ho", "hai", "ha", "abbiamo", "avete", "hanno"],
+        impf: ["avevo", "avevi", "aveva", "avevamo", "avevate", "avevano"],
+        perf: ["ebbi", "avesti", "ebbe", "avemmo", "aveste", "ebbero"]
+      },
+      sub: {
+        pres: ["che io abbia", "che tu abbia", "che egli abbia", "che noi abbiamo", "che voi abbiate", "che essi abbiano"],
+        impf: ["che io avessi", "che tu avessi", "che egli avesse", "che noi avessimo", "che voi aveste", "che essi avessero"]
+      }
+    },
+    "essere": {
+      ind: {
+        pres: ["sono", "sei", "è", "siamo", "siete", "sono"],
+        impf: ["ero", "eri", "era", "eravamo", "eravate", "erano"],
+        perf: ["fui", "fosti", "fu", "fummo", "foste", "furono"]
+      },
+      sub: {
+        pres: ["che io sia", "che tu sia", "che egli sia", "che noi siamo", "che voi siate", "che essi siano"],
+        impf: ["che io fossi", "che tu fossi", "che egli fosse", "che noi fossimo", "che voi foste", "che essi fossero"]
+      }
+    },
+    "fare": {
+      ind: {
+        pres: ["faccio", "fai", "fa", "facciamo", "fate", "fanno"],
+        impf: ["facevo", "facevi", "faceva", "facevamo", "facevate", "facevano"],
+        perf: ["feci", "facesti", "fece", "facemmo", "faceste", "fecero"]
+      }
+    },
+    "dire": {
+      ind: {
+        pres: ["dico", "dici", "dice", "diciamo", "dite", "dicono"],
+        impf: ["dicevo", "dicevi", "diceva", "dicevamo", "dicevate", "dicevano"],
+        perf: ["dissi", "dicesti", "disse", "dicemmo", "diceste", "dissero"]
+      }
+    },
+    "andare": {
+      ind: { pres: ["vado", "vai", "va", "andiamo", "andate", "vanno"] }
+    },
+    "stare": {
+      ind: { pres: ["sto", "stai", "sta", "stiamo", "state", "stanno"] }
+    },
+    "dare": {
+      ind: { pres: ["do", "dai", "da", "diamo", "date", "danno"] }
+    },
+    "venire": {
+      ind: { pres: ["vengo", "vieni", "viene", "veniamo", "venite", "vengono"] }
+    },
+    "punire": {
+      ind: { pres: ["punisco", "punisci", "punisce", "puniamo", "punite", "puniscono"] }
+    },
+    "dovere": {
+      ind: { pres: ["devo", "devi", "deve", "dobbiamo", "dovete", "devono"] }
+    },
+    "rimanere": {
+      ind: { pres: ["rimango", "rimani", "rimane", "rimaniamo", "rimanete", "rimangono"] }
+    },
+    "raccogliere": {
+      ind: { pres: ["raccolgo", "raccogli", "raccoglie", "raccogliamo", "raccogliete", "raccolgono"] }
+    },
+    "rapire": {
+      ind: { pres: ["rapisco", "rapisci", "rapisce", "rapiamo", "rapite", "rapiscono"] }
+    },
+    "sapere": {
+      ind: { pres: ["so", "sai", "sa", "sappiamo", "sapete", "sanno"] }
+    },
+    "capire": {
+      ind: { pres: ["capisco", "capisci", "capisce", "capiamo", "capite", "capiscono"] }
+    }
+  };
 
       if (IRREGOLARI[verbo] && IRREGOLARI[verbo][modo] && IRREGOLARI[verbo][modo][tempo]) {
         return [IRREGOLARI[verbo][modo][tempo][person]];
