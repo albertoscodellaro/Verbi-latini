@@ -246,7 +246,7 @@
                 <label class="form-check-label small" for="conj3">3ª (-ere)</label>
               </div>
               <div class="form-check form-check-inline me-0">
-                <input class="form-check-input chk-conj" type="checkbox" id="conj3io" value="3io" checked onchange="onConjChange()">
+                <input class="form-check-input chk-conj" type="checkbox" id="conj3io" value="3m" checked onchange="onConjChange()">
                 <label class="form-check-label small" for="conj3io">3ª in -io</label>
               </div>
               <div class="form-check form-check-inline me-0">
@@ -387,6 +387,43 @@
     </div>
   </div>
 
+  <!-- SEZIONE: CONIUGATORE ITALIANO PER MODELLI -->
+  <div class="container-fluid px-3 px-md-4 my-4">
+    <div class="card card-custom p-4" id="sezione-coniugatore">
+      <h4 class="fw-bold text-primary border-bottom pb-2 mb-3">
+        🔍 Supporto Coniugazione Italiana (Verbi Regolari e Modelli)
+      </h4>
+      <p class="text-muted small">Usa questo strumento per verificare la coniugazione italiana dei verbi appresi nel vocabolario.</p>
+
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <label for="modello" class="form-label fw-bold small">1. Scegli il modello di coniugazione:</label>
+          <select id="modello" class="form-select" onchange="aggiornaSuggerimenti()">
+            <option value="capire">Capire (-ire in -isco)</option>
+            <option value="parlare">Parlare (-are regolare)</option>
+            <option value="temere">Temere (-ere regolare)</option>
+          </select>
+          <div id="lista-verbi" class="form-text small text-muted mt-1"></div>
+        </div>
+
+        <div class="col-md-6">
+          <label for="verbo-input" class="form-label fw-bold small">2. Inserisci un verbo da coniugare:</label>
+          <input type="text" id="verbo-input" class="form-control" placeholder="Es. finire">
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-primary fw-bold" onclick="coniugaVerbo()">
+        Coniuga Verbo
+      </button>
+
+      <!-- Box Output Risultati -->
+      <div id="risultato" class="mt-3 p-3 bg-light border-start border-4 border-primary rounded" style="display: none;">
+        <h5 id="titolo-risultato" class="fw-bold text-dark mb-2">Presente Indicativo:</h5>
+        <ul id="coniugazione-list" class="list-unstyled mb-0"></ul>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL: ISTRUZIONI -->
   <div class="modal fade" id="modalHelp" tabindex="-1">
     <div class="modal-dialog modal-lg">
@@ -427,7 +464,7 @@
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body p-4" id="valutazioneContent">
-          <!-- Popolated by JS -->
+          <!-- Populated by JS -->
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
@@ -436,40 +473,6 @@
       </div>
     </div>
   </div>
-<!-- ========================================== -->
-<!-- NUOVA SEZIONE: CONIUGATORE ITALIANO PER MODELLI -->
-<!-- ========================================== -->
-<div class="exercise-card" id="sezione-coniugatore" style="margin-top: 30px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background: #fff;">
-    <h3 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 8px;">
-        🔍 Supporto Coniugazione Italiana (Verbi Regolari e Modelli)
-    </h3>
-    <p class="hint">Usa questo strumento per verificare la coniugazione italiana dei verbi appresi nel vocabolario.</p>
-
-    <div style="margin-bottom: 15px;">
-        <label for="modello" style="font-weight: bold; display: block;">1. Scegli il modello di coniugazione:</label>
-        <select id="modello" onchange="aggiornaSuggerimenti()" style="width: 100%; padding: 8px; margin-top: 5px;">
-            <option value="capire">Capire (-ire in -isco)</option>
-            <option value="parlare">Parlare (-are regolare)</option>
-            <option value="temere">Temere (-ere regolare)</option>
-        </select>
-        <div id="lista-verbi" style="font-size: 0.85em; color: #7f8c8d; margin-top: 5px;"></div>
-    </div>
-
-    <div style="margin-bottom: 15px;">
-        <label for="verbo-input" style="font-weight: bold; display: block;">2. Inserisci un verbo da coniugare:</label>
-        <input type="text" id="verbo-input" placeholder="Es. finire" style="width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box;">
-    </div>
-
-    <button type="button" onclick="coniugaVerbo()" style="background-color: #3498db; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; width: 100%;">
-        Coniuga Verbo
-    </button>
-
-    <!-- Box Output Risultati -->
-    <div id="risultato" style="margin-top: 20px; padding: 15px; background-color: #e8f4f8; border-left: 5px solid #3498db; display: none; border-radius: 4px;">
-        <h4 id="titolo-risultato" style="margin-top: 0; color: #2c3e50;">Presente Indicativo:</h4>
-        <ul id="coniugazione-list" style="list-style-type: none; padding: 0; margin: 0;"></ul>
-    </div>
-</div>
 
   <!-- MODAL: AREA DOCENTE / LOGIN -->
   <div class="modal fade" id="modalAdmin" tabindex="-1">
@@ -516,7 +519,7 @@
                     <option value="1">1ª (-are)</option>
                     <option value="2">2ª (-ēre)</option>
                     <option value="3">3ª (-ere)</option>
-                    <option value="3io">3ª in -io</option>
+                    <option value="3m">3ª in -io</option>
                     <option value="4">4ª (-ire)</option>
                   </select>
                 </div>
@@ -610,7 +613,7 @@
 
     // Pronouns in Italian & Latin
     const PRONOUNS_ITA = ["io", "tu", "egli", "noi", "voi", "essi"];
-    const PRONOUNS_LAT = ["ego", "tu", "is, ea, id", "nos", "vos", "ii, eae, ea"];
+    const PRONOUNS_LAT = ["ego", "tu", "is", "nos", "vos", "ii"];
 
     // State Variables
     let currentQuestion = null;
@@ -649,138 +652,203 @@
     // ==========================================
     // INTERCETTORE VERBI IRREGOLARI ITALIANI
     // ==========================================
- function gestisciIrregolareItaliano(verbo, modo, tempo, voice, person) {
-  if (voice === 'pass') return null; // Il passivo usa l'ausiliare "essere" + participio
+    function gestisciIrregolareItaliano(verbo, modo, tempo, voice, person) {
+      if (voice === 'pass') return null; // Il passivo usa l'ausiliare "essere" + participio
 
-  verbo = verbo.toLowerCase().trim();
+      verbo = verbo.toLowerCase().trim();
 
-  // Dizionario eccezioni verbi ausiliari e irregolari comuni
-  const IRREGOLARI = {
-    "avere": {
-      ind: {
-        pres: ["ho", "hai", "ha", "abbiamo", "avete", "hanno"],
-        impf: ["avevo", "avevi", "aveva", "avevamo", "avevate", "avevano"],
-        perf: ["ebbi", "avesti", "ebbe", "avemmo", "aveste", "ebbero"]
-      },
-      sub: {
-        pres: ["che io abbia", "che tu abbia", "che egli abbia", "che noi abbiamo", "che voi abbiate", "che essi abbiano"],
-        impf: ["che io avessi", "che tu avessi", "che egli avesse", "che noi avessimo", "che voi aveste", "che essi avessero"]
+      // Dizionario eccezioni verbi ausiliari e irregolari comuni (senza "che" o pronomi nei valori)
+      const IRREGOLARI = {
+        "avere": {
+          ind: {
+            pres: ["ho", "hai", "ha", "abbiamo", "avete", "hanno"],
+            impf: ["avevo", "avevi", "aveva", "avevamo", "avevate", "avevano"],
+            perf: ["ebbi", "avesti", "ebbe", "avemmo", "aveste", "ebbero"],
+            fut:  ["avrò", "avrai", "avrà", "avremo", "avrete", "avranno"]
+          },
+          sub: {
+            pres: ["abbia", "abbia", "abbia", "abbiamo", "abbiate", "abbiano"],
+            impf: ["avessi", "avessi", "avesse", "avessimo", "aveste", "avessero"]
+          }
+        },
+        "essere": {
+          ind: {
+            pres: ["sono", "sei", "è", "siamo", "siete", "sono"],
+            impf: ["ero", "eri", "era", "eravamo", "eravate", "erano"],
+            perf: ["fui", "fosti", "fu", "fummo", "foste", "furono"],
+            fut:  ["sarò", "sarai", "sarà", "saremo", "sarete", "saranno"]
+          },
+          sub: {
+            pres: ["sia", "sia", "sia", "siamo", "siate", "siano"],
+            impf: ["fossi", "fossi", "fosse", "fossimo", "foste", "fossero"]
+          }
+        },
+        "fare": {
+          ind: {
+            pres: ["faccio", "fai", "fa", "facciamo", "fate", "fanno"],
+            impf: ["facevo", "facevi", "faceva", "facevamo", "facevate", "facevano"],
+            perf: ["feci", "facesti", "fece", "facemmo", "faceste", "fecero"],
+            fut:  ["farò", "farai", "farà", "faremo", "farete", "faranno"]
+          },
+          sub: {
+            pres: ["faccia", "faccia", "faccia", "facciamo", "facciate", "facciano"],
+            impf: ["facessi", "facessi", "facesse", "facessimo", "faceste", "facessero"]
+          }
+        },
+        "dire": {
+          ind: {
+            pres: ["dico", "dici", "dice", "diciamo", "dite", "dicono"],
+            impf: ["dicevo", "dicevi", "diceva", "dicevamo", "dicevate", "dicevano"],
+            perf: ["dissi", "dicesti", "disse", "dicemmo", "diceste", "dissero"],
+            fut:  ["dirò", "dirai", "dirà", "diremo", "direte", "diranno"]
+          },
+          sub: {
+            pres: ["dica", "dica", "dica", "diciamo", "diciate", "dicano"],
+            impf: ["dicessi", "dicessi", "dicesse", "dicessimo", "diceste", "dicessero"]
+          }
+        },
+        "andare": {
+          ind: {
+            pres: ["vado", "vai", "va", "andiamo", "andate", "vanno"],
+            impf: ["andavo", "andavi", "andava", "andavamo", "andavate", "andavano"],
+            perf: ["andai", "andasti", "andò", "andammo", "andaste", "andarono"],
+            fut:  ["andrò", "andrai", "andrà", "andremo", "andrete", "andranno"]
+          },
+          sub: {
+            pres: ["vada", "vada", "vada", "andiamo", "andiate", "vadano"],
+            impf: ["andassi", "andassi", "andasse", "andassimo", "andaste", "andassero"]
+          }
+        },
+        "stare": {
+          ind: {
+            pres: ["sto", "stai", "sta", "stiamo", "state", "stanno"],
+            impf: ["stavo", "stavi", "stava", "stavamo", "stavate", "stavano"],
+            perf: ["stetti", "stesti", "stette", "stemmo", "steste", "stettero"],
+            fut:  ["starò", "starai", "starà", "staremo", "starete", "staranno"]
+          },
+          sub: {
+            pres: ["stia", "stia", "stia", "stiamo", "stiate", "stiano"],
+            impf: ["stessi", "stessi", "stesse", "stessimo", "steste", "stessero"]
+          }
+        },
+        "dare": {
+          ind: {
+            pres: ["do", "dai", "da", "diamo", "date", "danno"],
+            impf: ["davo", "davi", "dava", "davamo", "davate", "davano"],
+            perf: ["diedi", "dasti", "diede", "dammo", "daste", "diedero"],
+            fut:  ["darò", "darai", "darà", "daremo", "darete", "daranno"]
+          },
+          sub: {
+            pres: ["dia", "dia", "dia", "diamo", "diate", "diano"],
+            impf: ["dessi", "dessi", "desse", "dessimo", "deste", "dessero"]
+          }
+        },
+        "venire": {
+          ind: {
+            pres: ["vengo", "vieni", "viene", "veniamo", "venite", "vengono"],
+            impf: ["venivo", "venivi", "veniva", "venivamo", "venivate", "venivano"],
+            perf: ["venni", "venisti", "venne", "venimmo", "veniste", "vennero"],
+            fut:  ["verrò", "verrai", "verrà", "verremo", "verrete", "verranno"]
+          },
+          sub: {
+            pres: ["venga", "venga", "venga", "veniamo", "veniate", "vengano"],
+            impf: ["venissi", "venissi", "venisse", "venissimo", "veniste", "venissero"]
+          }
+        },
+        "punire": {
+          ind: { pres: ["punisco", "punisci", "punisce", "puniamo", "punite", "puniscono"] },
+          sub: { pres: ["punisca", "punisca", "punisca", "puniamo", "puniate", "puniscano"] }
+        },
+        "dovere": {
+          ind: {
+            pres: ["devo", "devi", "deve", "dobbiamo", "dovete", "devono"],
+            fut:  ["dovrò", "dovrai", "dovrà", "dovremo", "dovrete", "dovranno"]
+          },
+          sub: { pres: ["debba", "debba", "debba", "dobbiamo", "dobbiate", "debbano"] }
+        },
+        "rimanere": {
+          ind: {
+            pres: ["rimango", "rimani", "rimane", "rimaniamo", "rimanete", "rimangono"],
+            perf: ["rimasi", "rimanesti", "rimase", "rimanemmo", "rimaneste", "rimasero"],
+            fut:  ["rimarrò", "rimarrai", "rimarrà", "rimarremo", "rimarrete", "rimarranno"]
+          }
+        },
+        "raccogliere": {
+          ind: {
+            pres: ["raccolgo", "raccogli", "raccoglie", "raccogliamo", "raccogliete", "raccolgono"],
+            perf: ["raccolsi", "raccogliesti", "raccolse", "raccogliemmo", "raccoglieste", "raccolsero"]
+          }
+        },
+        "rapire": {
+          ind: { pres: ["rapisco", "rapisci", "rapisce", "rapiamo", "rapite", "rapiscono"] },
+          sub: { pres: ["rapisca", "rapisca", "rapisca", "rapiamo", "rapiate", "rapiscano"] }
+        },
+        "sapere": {
+          ind: {
+            pres: ["so", "sai", "sa", "sappiamo", "sapete", "sanno"],
+            impf: ["sapevo", "sapevi", "sapeva", "sapevamo", "sapevate", "sapevano"],
+            perf: ["seppi", "sapesti", "seppe", "sapemmo", "sapeste", "seppero"],
+            fut:  ["saprò", "saprai", "saprà", "sapremo", "saprete", "sapranno"]
+          },
+          sub: { pres: ["sappia", "sappia", "sappia", "sappiamo", "sappiate", "sappiano"] }
+        },
+        "capire": {
+          ind: { pres: ["capisco", "capisci", "capisce", "capiamo", "capite", "capiscono"] },
+          sub: { pres: ["capisca", "capisca", "capisca", "capiamo", "capiate", "capiscano"] }
+        },
+        "legare": {
+          ind: { pres: ["lego", "leghi", "lega", "leghiamo", "legate", "legano"] }
+        }
+      };
+
+      if (IRREGOLARI[verbo] && IRREGOLARI[verbo][modo] && IRREGOLARI[verbo][modo][tempo]) {
+        return [IRREGOLARI[verbo][modo][tempo][person]];
       }
-    },
-    "essere": {
-      ind: {
-        pres: ["sono", "sei", "è", "siamo", "siete", "sono"],
-        impf: ["ero", "eri", "era", "eravamo", "eravate", "erano"],
-        perf: ["fui", "fosti", "fu", "fummo", "foste", "furono"]
-      },
-      sub: {
-        pres: ["che io sia", "che tu sia", "che egli sia", "che noi siamo", "che voi siate", "che essi siano"],
-        impf: ["che io fossi", "che tu fossi", "che egli fosse", "che noi fossimo", "che voi foste", "che essi fossero"]
+
+      // Regola per verbi contratti in -durre (condurre, produrre, tradurre)
+      if (verbo.endsWith("durre")) {
+        const prefisso = verbo.slice(0, -5);
+        if (modo === "ind") {
+          if (tempo === "pres") return [prefisso + ["duco", "duci", "duce", "duciamo", "ducete", "ducono"][person]];
+          if (tempo === "impf") return [prefisso + ["ducevo", "ducevi", "duceva", "ducevamo", "ducevate", "ducevano"][person]];
+          if (tempo === "perf") return [prefisso + ["dussi", "ducesti", "dusse", "ducemmo", "duceste", "dussero"][person]];
+          if (tempo === "fut")  return [prefisso + ["durrò", "durrai", "durrà", "durremo", "durrete", "durranno"][person]];
+        } else if (modo === "sub") {
+          if (tempo === "pres") return [prefisso + ["duca", "duca", "duca", "duciamo", "duciate", "ducano"][person]];
+          if (tempo === "impf") return [prefisso + ["ducessi", "ducessi", "ducesse", "ducessimo", "duceste", "ducessero"][person]];
+        }
       }
-    },
-    "fare": {
-      ind: {
-        pres: ["faccio", "fai", "fa", "facciamo", "fate", "fanno"],
-        impf: ["facevo", "facevi", "faceva", "facevamo", "facevate", "facevano"],
-        perf: ["feci", "facesti", "fece", "facemmo", "faceste", "fecero"]
+
+      // Regola per verbi contratti in -porre (comporre, esporre, proporre)
+      if (verbo.endsWith("porre")) {
+        const prefisso = verbo.slice(0, -5);
+        if (modo === "ind") {
+          if (tempo === "pres") return [prefisso + ["pongo", "poni", "pone", "poniamo", "ponete", "pongono"][person]];
+          if (tempo === "impf") return [prefisso + ["ponevo", "ponevi", "poneva", "ponevamo", "ponevate", "ponevano"][person]];
+          if (tempo === "perf") return [prefisso + ["posi", "ponesti", "pose", "ponemmo", "poneste", "posero"][person]];
+          if (tempo === "fut")  return [prefisso + ["porrò", "porrai", "porrà", "porremo", "porrete", "porranno"][person]];
+        } else if (modo === "sub") {
+          if (tempo === "pres") return [prefisso + ["ponga", "ponga", "ponga", "poniamo", "poniate", "pongano"][person]];
+          if (tempo === "impf") return [prefisso + ["ponessi", "ponessi", "ponesse", "ponessimo", "poneste", "ponessero"][person]];
+        }
       }
-    },
-    "dire": {
-      ind: {
-        pres: ["dico", "dici", "dice", "diciamo", "dite", "dicono"],
-        impf: ["dicevo", "dicevi", "diceva", "dicevamo", "dicevate", "dicevano"],
-        perf: ["dissi", "dicesti", "disse", "dicemmo", "diceste", "dissero"]
+
+      // Regola per verbi contratti in -trarre (estrarre, contrarre, attrarre)
+      if (verbo.endsWith("trarre")) {
+        const prefisso = verbo.slice(0, -6);
+        if (modo === "ind") {
+          if (tempo === "pres") return [prefisso + ["traggo", "trai", "trae", "traiamo", "traete", "traggono"][person]];
+          if (tempo === "impf") return [prefisso + ["traevo", "traevi", "traeva", "traevamo", "traevate", "traevano"][person]];
+          if (tempo === "perf") return [prefisso + ["trassi", "traesti", "trasse", "traemmo", "traeste", "trassero"][person]];
+          if (tempo === "fut")  return [prefisso + ["trarrò", "trarrai", "trarrà", "trarremo", "trarrete", "trarranno"][person]];
+        } else if (modo === "sub") {
+          if (tempo === "pres") return [prefisso + ["tragga", "tragga", "tragga", "traiamo", "traiate", "traggano"][person]];
+          if (tempo === "impf") return [prefisso + ["traessi", "traessi", "traesse", "traessimo", "traeste", "traessero"][person]];
+        }
       }
-    },
-    "andare": {
-      ind: { pres: ["vado", "vai", "va", "andiamo", "andate", "vanno"] }
-    },
-    "stare": {
-      ind: { pres: ["sto", "stai", "sta", "stiamo", "state", "stanno"] }
-    },
-    "dare": {
-      ind: { pres: ["do", "dai", "da", "diamo", "date", "danno"] }
-    },
-    "venire": {
-      ind: { pres: ["vengo", "vieni", "viene", "veniamo", "venite", "vengono"] }
-    },
-    "punire": {
-      ind: { pres: ["punisco", "punisci", "punisce", "puniamo", "punite", "puniscono"] }
-    },
-    "dovere": {
-      ind: { pres: ["devo", "devi", "deve", "dobbiamo", "dovete", "devono"] }
-    },
-    "rimanere": {
-      ind: { pres: ["rimango", "rimani", "rimane", "rimaniamo", "rimanete", "rimangono"] }
-    },
-    "raccogliere": {
-      ind: { pres: ["raccolgo", "raccogli", "raccoglie", "raccogliamo", "raccogliete", "raccolgono"] }
-    },
-    "rapire": {
-      ind: { pres: ["rapisco", "rapisci", "rapisce", "rapiamo", "rapite", "rapiscono"] }
-    },
-    "sapere": {
-      ind: { pres: ["so", "sai", "sa", "sappiamo", "sapete", "sanno"] }
-    },
-    "capire": {
-      ind: { pres: ["capisco", "capisci", "capisce", "capiamo", "capite", "capiscono"] }
+
+      return null;
     }
-    "legare": {
-    ind: {pres: ["lego", "leghi", "lega", "leghiamo", "legate", "legano"]}
-  }
-  };
-
-  if (IRREGOLARI[verbo] && IRREGOLARI[verbo][modo] && IRREGOLARI[verbo][modo][tempo]) {
-    return [IRREGOLARI[verbo][modo][tempo][person]];
-  }
-
-  // Regola per verbi contratti in -durre (condurre, produrre, tradurre)
-  if (verbo.endsWith("durre")) {
-    const prefisso = verbo.slice(0, -5);
-    if (modo === "ind") {
-      if (tempo === "pres") {
-        const end = ["duco", "duci", "duce", "duciamo", "ducete", "ducono"];
-        return [prefisso + end[person]];
-      } else if (tempo === "impf") {
-        const end = ["ducevo", "ducevi", "duceva", "ducevamo", "ducevate", "ducevano"];
-        return [prefisso + end[person]];
-      } else if (tempo === "perf") {
-        const end = ["dussi", "ducesti", "dusse", "ducemmo", "duceste", "dussero"];
-        return [prefisso + end[person]];
-      }
-    }
-  }
-
-  // Regola per verbi contratti in -porre (comporre, esporre, proporre)
-  if (verbo.endsWith("porre")) {
-    const prefisso = verbo.slice(0, -5);
-    if (modo === "ind") {
-      if (tempo === "pres") {
-        const end = ["pongo", "poni", "pone", "poniamo", "ponete", "pongono"];
-        return [prefisso + end[person]];
-      } else if (tempo === "impf") {
-        const end = ["ponevo", "ponevi", "poneva", "ponevamo", "ponevate", "ponevano"];
-        return [prefisso + end[person]];
-      }
-    }
-  }
-
-  // Regola per verbi contratti in -trarre (estrarre, contrarre, attrarre)
-  if (verbo.endsWith("trarre")) {
-    const prefisso = verbo.slice(0, -6);
-    if (modo === "ind") {
-      if (tempo === "pres") {
-        const end = ["traggo", "trai", "trae", "traiamo", "traete", "traggono"];
-        return [prefisso + end[person]];
-      } else if (tempo === "impf") {
-        const end = ["traevo", "traevi", "traeva", "traevamo", "traevate", "traevano"];
-        return [prefisso + end[person]];
-      }
-    }
-  }
-
-  return null;
-}
 
     // ==========================================
     // ITALIAN CONJUGATION ENGINE
@@ -792,10 +860,18 @@
       let formaIrregolare = gestisciIrregolareItaliano(itInf, mode, tense, voice, person);
       if (formaIrregolare) return formaIrregolare;
 
-      // 2. Coniugazione regolare
+      // Lista verbi intransitivi che usano l'ausiliario "essere"
+      const INTRANSITIVI_ESSERE = ["essere", "venire", "andare", "stare", "rimanere"];
+      let useEssere = INTRANSITIVI_ESSERE.includes(itInf.toLowerCase().trim());
+
+      // 2. Coniugazione regolare e inchoativa (-isco)
       let stem = itInf.replace(/(are|ere|ire)$/, '');
       let endingType = itInf.slice(-3); // 'are', 'ere', 'ire'
       let part = itPart || (endingType === 'are' ? stem + 'ato' : endingType === 'ere' ? stem + 'uto' : stem + 'ito');
+
+      // Verbi incoativi in -ire (es. capire, punire, finire)
+      const INCOATIVI = ["punire", "capire", "finire", "pulire", "gradire", "preferire", "spedire", "rapire"];
+      let isInchoative = INCOATIVI.includes(itInf.toLowerCase().trim());
 
       let forms = [];
 
@@ -828,17 +904,26 @@
           else if (tense === 'fut') forms.push(essFut[person] + " " + pGender);
           else if (tense === 'futp') forms.push(essFut[person] + " stato/a " + pGender);
         } else if (mode === 'sub') {
-          if (tense === 'pres') forms.push("che " + PRONOUNS_ITA[person] + " " + essSubPres[person] + " " + pGender);
-          else if (tense === 'impf') forms.push("che " + PRONOUNS_ITA[person] + " " + essSubImpf[person] + " " + pGender, essCondPres[person] + " " + pGender);
-          else if (tense === 'perf') forms.push("che " + PRONOUNS_ITA[person] + " " + essSubPres[person] + " stato/a " + pGender);
-          else if (tense === 'plup') forms.push("che " + PRONOUNS_ITA[person] + " " + essSubImpf[person] + " stato/a " + pGender);
+          if (tense === 'pres') forms.push(essSubPres[person] + " " + pGender);
+          else if (tense === 'impf') forms.push(essSubImpf[person] + " " + pGender, essCondPres[person] + " " + pGender);
+          else if (tense === 'perf') forms.push(essSubPres[person] + " stato/a " + pGender);
+          else if (tense === 'plup') forms.push(essSubImpf[person] + " stato/a " + pGender);
         }
       } else {
         // Active Voice
+        let auxP = useEssere ? essPres : avPres;
+        let auxI = useEssere ? essImpf : avImpf;
+        let auxPR = useEssere ? essPassRem : avPassRem;
+        let auxF = useEssere ? essFut : avFut;
+        let auxSP = useEssere ? essSubPres : avSubPres;
+        let auxSI = useEssere ? essSubImpf : avSubImpf;
+        let auxC = useEssere ? essCondPres : avCondPres;
+
         if (mode === 'ind') {
           if (tense === 'pres') {
             let end = (endingType === 'are') ? ["o","i","a","iamo","ate","ano"] :
-                      (endingType === 'ere') ? ["o","i","e","iamo","ete","ono"] : ["o","i","e","iamo","ite","ono"];
+                      (endingType === 'ere') ? ["o","i","e","iamo","ete","ono"] :
+                      (isInchoative ? ["isco","isci","isce","iamo","ite","iscono"] : ["o","i","e","iamo","ite","ono"]);
             forms.push(stem + end[person]);
           } else if (tense === 'impf') {
             let end = (endingType === 'are') ? ["avo","avi","ava","avamo","avate","avano"] :
@@ -848,32 +933,33 @@
             let endRem = (endingType === 'are') ? ["ai","asti","ò","ammo","aste","arono"] :
                          (endingType === 'ere') ? ["ei","esti","è","emmo","este","erono"] : ["ii","isti","ì","immo","iste","irono"];
             forms.push(stem + endRem[person]); // Remoto
-            forms.push(avPres[person] + " " + part); // Prossimo
-            forms.push(avPassRem[person] + " " + part); // Trapassato remoto
+            forms.push(auxP[person] + " " + part); // Prossimo
+            forms.push(auxPR[person] + " " + part); // Trapassato remoto
           } else if (tense === 'plup') {
-            forms.push(avImpf[person] + " " + part);
+            forms.push(auxI[person] + " " + part);
           } else if (tense === 'fut') {
             let endFut = (endingType === 'are' || endingType === 'ere') ? ["erò","erai","erà","eremo","erete","eranno"] : ["irò","irai","irà","iremo","irete","iranno"];
             forms.push(stem + endFut[person]);
           } else if (tense === 'futp') {
-            forms.push(avFut[person] + " " + part);
+            forms.push(auxF[person] + " " + part);
           }
         } else if (mode === 'sub') {
           if (tense === 'pres') {
-            let endSubP = (endingType === 'are') ? ["i","i","i","iamo","iate","ino"] : ["a","a","a","iamo","iate","ano"];
-            forms.push("che " + PRONOUNS_ITA[person] + " " + stem + endSubP[person]);
+            let endSubP = (endingType === 'are') ? ["i","i","i","iamo","iate","ino"] :
+                          (isInchoative ? ["isca","isca","isca","iamo","iate","iscano"] : ["a","a","a","iamo","iate","ano"]);
+            forms.push(stem + endSubP[person]);
           } else if (tense === 'impf') {
             let endSubI = (endingType === 'are') ? ["assi","assi","asse","assimo","aste","assero"] :
                           (endingType === 'ere') ? ["essi","essi","esse","essimo","este","essero"] : ["issi","issi","isse","issimo","iste","issero"];
             let condEnd = (endingType === 'are' || endingType === 'ere') ? ["erei","eresti","erebbe","eremmo","ereste","erebbero"] : ["irei","iresti","irebbe","iremmo","ireste","irebbero"];
             
-            forms.push("che " + PRONOUNS_ITA[person] + " " + stem + endSubI[person]);
+            forms.push(stem + endSubI[person]);
             forms.push(stem + condEnd[person]);
           } else if (tense === 'perf') {
-            forms.push("che " + PRONOUNS_ITA[person] + " " + avSubPres[person] + " " + part);
+            forms.push(auxSP[person] + " " + part);
           } else if (tense === 'plup') {
-            forms.push("che " + PRONOUNS_ITA[person] + " " + avSubImpf[person] + " " + part);
-            forms.push(avCondPres[person] + " " + part);
+            forms.push(auxSI[person] + " " + part);
+            forms.push(auxC[person] + " " + part);
           }
         } else if (mode === 'imp') {
           if (person === 1) forms.push(stem + (endingType === 'are' ? 'a' : 'i'));
@@ -881,7 +967,7 @@
           else forms.push(stem + "i");
         } else if (mode === 'inf') {
           if (tense === 'pres') forms.push(itInf);
-          else if (tense === 'perf') forms.push("avere " + part);
+          else if (tense === 'perf') forms.push((useEssere ? "essere " : "avere ") + part);
           else forms.push("stare per " + itInf);
         } else if (mode === 'part') {
           if (tense === 'pres') forms.push(stem + (endingType === 'are' ? 'ante' : 'ente'));
@@ -918,7 +1004,7 @@
               '1': ["o", "as", "at", "amus", "atis", "ant"],
               '2': ["eo", "es", "et", "emus", "etis", "ent"],
               '3': ["o", "is", "it", "imus", "itis", "unt"],
-              '3io': ["io", "is", "it", "imus", "itis", "iunt"],
+              '3m': ["io", "is", "it", "imus", "itis", "iunt"],
               '4': ["io", "is", "it", "imus", "itis", "iunt"]
             };
             res = presStem + ends[conj][person];
@@ -927,7 +1013,7 @@
               '1': ["or", "aris", "atur", "amur", "amini", "antur"],
               '2': ["eor", "eris", "etur", "emur", "emini", "entur"],
               '3': ["or", "eris", "itur", "imur", "imini", "untur"],
-              '3io': ["ior", "eris", "itur", "imur", "imini", "iuntur"],
+              '3m': ["ior", "eris", "itur", "imur", "imini", "iuntur"],
               '4': ["ior", "iris", "itur", "imur", "imini", "iuntur"]
             };
             res = presStem + ends[conj][person];
@@ -935,7 +1021,7 @@
         } else if (tense === 'impf') {
           if (voice === 'act') {
             const ends = {
-              '1': "abam", '2': "ebam", '3': "ebam", '3io': "iebam", '4': "iebam"
+              '1': "abam", '2': "ebam", '3': "ebam", '3m': "iebam", '4': "iebam"
             };
             const persEnds = ["", "s", "t", "mus", "tis", "nt"];
             let base = presStem + ends[conj].slice(0, -1);
@@ -943,7 +1029,7 @@
             if (person === 0) res = presStem + ends[conj];
           } else {
             const ends = {
-              '1': "abar", '2': "ebar", '3': "ebar", '3io': "iebar", '4': "iebar"
+              '1': "abar", '2': "ebar", '3': "ebar", '3m': "iebar", '4': "iebar"
             };
             const persEnds = ["", "is", "tur", "mur", "mini", "ntur"];
             let base = presStem + ends[conj].slice(0, -1);
@@ -975,7 +1061,7 @@
               res = presStem + (conj === '1' ? 'a' : 'e') + ends[person];
             } else {
               const ends = ["am", "es", "et", "emus", "etis", "ent"];
-              let prefix = (conj === '3io' || conj === '4') ? presStem + "i" : presStem;
+              let prefix = (conj === '3m' || conj === '4') ? presStem + "i" : presStem;
               res = prefix + ends[person];
             }
           } else {
@@ -984,7 +1070,7 @@
               res = presStem + (conj === '1' ? 'a' : 'e') + ends[person];
             } else {
               const ends = ["ar", "eris", "etur", "emur", "emini", "entur"];
-              let prefix = (conj === '3io' || conj === '4') ? presStem + "i" : presStem;
+              let prefix = (conj === '3m' || conj === '4') ? presStem + "i" : presStem;
               res = prefix + ends[person];
             }
           }
@@ -1001,11 +1087,11 @@
       } else if (mode === 'sub') {
         if (tense === 'pres') {
           if (voice === 'act') {
-            const vowels = { '1': 'e', '2': 'ea', '3': 'a', '3io': 'ia', '4': 'ia' };
+            const vowels = { '1': 'e', '2': 'ea', '3': 'a', '3m': 'ia', '4': 'ia' };
             const ends = ["m", "s", "t", "mus", "tis", "nt"];
             res = presStem + vowels[conj] + ends[person];
           } else {
-            const vowels = { '1': 'e', '2': 'ea', '3': 'a', '3io': 'ia', '4': 'ia' };
+            const vowels = { '1': 'e', '2': 'ea', '3': 'a', '3m': 'ia', '4': 'ia' };
             const ends = ["r", "ris", "tur", "mur", "mini", "ntur"];
             res = presStem + vowels[conj] + ends[person];
           }
@@ -1038,11 +1124,11 @@
           }
         }
       } else if (mode === 'imp') {
-        if (person === 1) res = (conj === '1') ? presStem + "a" : (conj === '2') ? presStem + "e" : (conj === '3') ? presStem + "e" : (conj === '3io') ? presStem + "e" : presStem + "i";
-        else res = (conj === '1') ? presStem + "ate" : (conj === '2') ? presStem + "ete" : (conj === '3') ? presStem + "ite" : (conj === '3io') ? presStem + "ite" : presStem + "ite";
+        if (person === 1) res = (conj === '1') ? presStem + "a" : (conj === '2') ? presStem + "e" : (conj === '3') ? presStem + "e" : (conj === '3m') ? presStem + "e" : presStem + "i";
+        else res = (conj === '1') ? presStem + "ate" : (conj === '2') ? presStem + "ete" : (conj === '3') ? presStem + "ite" : (conj === '3m') ? presStem + "ite" : presStem + "ite";
       } else if (mode === 'inf') {
         if (voice === 'act') res = presInf;
-        else res = (conj === '3' || conj === '3io') ? presStem + "i" : presInf.slice(0, -1) + "i";
+        else res = (conj === '3' || conj === '3m') ? presStem + "i" : presInf.slice(0, -1) + "i";
       } else if (mode === 'part') {
         res = presStem + (conj === '1' ? 'ans' : 'ens');
       } else if (mode === 'nominal') {
@@ -1193,7 +1279,16 @@
       } else {
         document.getElementById('badgeDirection').innerText = "Italiano ➔ Latino";
         document.getElementById('promptLabel').innerText = "Traduci in Latino la seguente voce italiana:";
-        document.getElementById('verbPrompt').innerText = (randomTenseConfig.mode === 'ind' || randomTenseConfig.mode === 'sub') ? `${PRONOUNS_ITA[randomPerson]} ${itaForms[0]}` : itaForms[0];
+        
+        // Formatta la visualizzazione dell'italiano senza duplicazioni di pronomi o "che"
+        let baseIta = itaForms[0];
+        if (randomTenseConfig.mode === 'sub') {
+          document.getElementById('verbPrompt').innerText = `che ${PRONOUNS_ITA[randomPerson]} ${baseIta}`;
+        } else if (randomTenseConfig.mode === 'ind') {
+          document.getElementById('verbPrompt').innerText = `${PRONOUNS_ITA[randomPerson]} ${baseIta}`;
+        } else {
+          document.getElementById('verbPrompt').innerText = baseIta;
+        }
         document.getElementById('verbClue').innerText = `Paradigma richiesto: ${paradigmStr}`;
       }
 
@@ -1278,12 +1373,15 @@
       let isCorrect = false;
 
       if (currentQuestion.direction === 'LAT_IT') {
-        // Checking Italian input
+        // Checking Italian input (accetta sia con che senza pronome / congiunzione)
+        const pIta = PRONOUNS_ITA[currentQuestion.person];
         for (let form of currentQuestion.italianForms) {
           let normForm = normalize(form);
-          let normWithPronoun = normalize(`${PRONOUNS_ITA[currentQuestion.person]} ${form}`);
-          
-          if (userNorm === normForm || userNorm === normWithPronoun) {
+          let normWithPronoun = normalize(`${pIta} ${form}`);
+          let normSubjFull = normalize(`che ${pIta} ${form}`);
+          let normSubjShort = normalize(`che ${form}`);
+
+          if (userNorm === normForm || userNorm === normWithPronoun || userNorm === normSubjFull || userNorm === normSubjShort) {
             isCorrect = true;
             break;
           }
@@ -1334,14 +1432,13 @@
       const feedback = document.getElementById('feedbackContainer');
       feedback.classList.remove('d-none');
 
-      let verbIt = currentQuestion.verb.italian || currentQuestion.verb.itInf;
       let verbParadigm = formatParadigm(currentQuestion.verb);
 
       if (isCorrect) {
         feedback.className = "mt-3 result-correct";
         feedback.innerHTML = `
           <div class="fw-bold fs-5 mb-1"><i class="fa-solid fa-circle-check me-2"></i>Risposta Esatta! (+${questionScore} punti)</div>
-          <div><strong>${currentQuestion.latinForm}</strong> è ${currentQuestion.grammarDesc} del verbo <em>${verbParadigm}</em>.<div>
+          <div><strong>${currentQuestion.latinForm}</strong> è ${currentQuestion.grammarDesc} del verbo <em>${verbParadigm}</em>.</div>
         `;
       } else {
         feedback.className = "mt-3 result-wrong";
@@ -1640,69 +1737,69 @@
       event.target.value = "";
     }
 
+    // ==========================================
+    // LOGICA CONIUGATORE ITALIANO PER MODELLI
+    // ==========================================
+    const databaseModelli = {
+      capire: {
+        desinenze: ["isco", "isci", "isce", "iamo", "ite", "iscono"],
+        verbiCompatibili: ["finire", "pulire", "colpire", "gradire", "preferire", "spedire"],
+        lunghezzaSuffisso: 3
+      },
+      parlare: {
+        desinenze: ["o", "i", "a", "iamo", "ate", "ano"],
+        verbiCompatibili: ["amare", "cantare", "lavorare", "pensare", "studiare", "guidare"],
+        lunghezzaSuffisso: 3
+      },
+      temere: {
+        desinenze: ["o", "i", "e", "iamo", "ete", "ono"],
+        verbiCompatibili: ["vedere", "credere", "vincere", "scrivere", "leggere", "ricevere"],
+        lunghezzaSuffisso: 3
+      }
+    };
+
+    const pronomiItaliani = ["Io", "Tu", "Lui/Lei", "Noi", "Voi", "Loro"];
+
+    function aggiornaSuggerimenti() {
+      const modelloScelto = document.getElementById("modello").value;
+      const info = databaseModelli[modelloScelto];
+      document.getElementById("lista-verbi").innerHTML = 
+        "<strong>Verbi consigliati:</strong> " + info.verbiCompatibili.join(", ");
+      document.getElementById("verbo-input").placeholder = "Es. " + info.verbiCompatibili[0];
+    }
+
+    function coniugaVerbo() {
+      const modelloScelto = document.getElementById("modello").value;
+      let verboInput = document.getElementById("verbo-input").value.trim().toLowerCase();
+      
+      if (verboInput === "") {
+        alert("Per favore, inserisci un verbo italiano.");
+        return;
+      }
+
+      const info = databaseModelli[modelloScelto];
+      const radice = verboInput.substring(0, verboInput.length - info.lunghezzaSuffisso);
+      const listaUI = document.getElementById("coniugazione-list");
+      listaUI.innerHTML = "";
+
+      info.desinenze.forEach((desinenza, index) => {
+        const li = document.createElement("li");
+        li.style.padding = "4px 0";
+        li.style.borderBottom = "1px solid #dce4ec";
+        li.innerHTML = `<span style="font-weight: bold; color: #2c3e50; width: 80px; display: inline-block;">${pronomiItaliani[index]}</span> ${radice}${desinenza}`;
+        listaUI.appendChild(li);
+      });
+
+      document.getElementById("titolo-risultato").innerText = `Presente Indicativo di "${verboInput.toUpperCase()}":`;
+      document.getElementById("risultato").style.display = "block";
+    }
+
     // INIT
     window.onload = function() {
       loadVerbDatabase();
       updateSettings();
+      aggiornaSuggerimenti();
     };
-    // === INTEGRAZIONE: LOGICA CONIUGATORE ITALIANO ===
-const databaseModelli = {
-    capire: {
-        desinenze: ["isco", "isci", "isce", "iamo", "ite", "iscono"],
-        verbiCompatibili: ["finire", "pulire", "colpire", "gradire", "preferire", "spedire"],
-        lunghezzaSuffisso: 3
-    },
-    parlare: {
-        desinenze: ["o", "i", "a", "iamo", "ate", "ano"],
-        verbiCompatibili: ["amare", "cantare", "lavorare", "pensare", "studiare", "guidare"],
-        lunghezzaSuffisso: 3
-    },
-    temere: {
-        desinenze: ["o", "i", "e", "iamo", "ete", "ono"],
-        verbiCompatibili: ["vedere", "credere", "vincere", "scrivere", "leggere", "ricevere"],
-        lunghezzaSuffisso: 3
-    }
-};
-
-const pronomiItaliani = ["Io", "Tu", "Lui/Lei", "Noi", "Voi", "Loro"];
-
-function aggiornaSuggerimenti() {
-    const modelloScelto = document.getElementById("modello").value;
-    const info = databaseModelli[modelloScelto];
-    document.getElementById("lista-verbi").innerHTML = 
-        "<strong>Verbi consigliati per questo modello:</strong> " + info.verbiCompatibili.join(", ");
-    document.getElementById("verbo-input").placeholder = "Es. " + info.verbiCompatibili[0];
-}
-
-function coniugaVerbo() {
-    const modelloScelto = document.getElementById("modello").value;
-    let verboInput = document.getElementById("verbo-input").value.trim().toLowerCase();
-    
-    if (verboInput === "") {
-        alert("Per favore, inserisci un verbo italiano.");
-        return;
-    }
-
-    const info = databaseModelli[modelloScelto];
-    const radice = verboInput.substring(0, verboInput.length - info.lunghezzaSuffisso);
-    const listaUI = document.getElementById("coniugazione-list");
-    listaUI.innerHTML = "";
-
-    info.desinenze.forEach((desinenza, index) => {
-        const li = document.createElement("li");
-        li.style.padding = "4px 0";
-        li.style.borderBottom = "1px solid #dce4ec";
-        li.innerHTML = `<span style="font-weight: bold; color: #2c3e50; width: 50px; display: inline-block;">${pronomiItaliani[index]}</span> ${radice}${desinenza}`;
-        listaUI.appendChild(li);
-    });
-
-    document.getElementById("titolo-risultato").innerText = `Presente Indicativo di "${verboInput.toUpperCase()}":`;
-    document.getElementById("risultato").style.display = "block";
-}
-
-// Chiamata di inizializzazione per mostrare i primi suggerimenti all'avvio
-aggiornaSuggerimenti();
-
   </script>
 </body>
 </html>
