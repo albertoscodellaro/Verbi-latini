@@ -436,6 +436,40 @@
       </div>
     </div>
   </div>
+<!-- ========================================== -->
+<!-- NUOVA SEZIONE: CONIUGATORE ITALIANO PER MODELLI -->
+<!-- ========================================== -->
+<div class="exercise-card" id="sezione-coniugatore" style="margin-top: 30px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background: #fff;">
+    <h3 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 8px;">
+        🔍 Supporto Coniugazione Italiana (Verbi Regolari e Modelli)
+    </h3>
+    <p class="hint">Usa questo strumento per verificare la coniugazione italiana dei verbi appresi nel vocabolario.</p>
+
+    <div style="margin-bottom: 15px;">
+        <label for="modello" style="font-weight: bold; display: block;">1. Scegli il modello di coniugazione:</label>
+        <select id="modello" onchange="aggiornaSuggerimenti()" style="width: 100%; padding: 8px; margin-top: 5px;">
+            <option value="capire">Capire (-ire in -isco)</option>
+            <option value="parlare">Parlare (-are regolare)</option>
+            <option value="temere">Temere (-ere regolare)</option>
+        </select>
+        <div id="lista-verbi" style="font-size: 0.85em; color: #7f8c8d; margin-top: 5px;"></div>
+    </div>
+
+    <div style="margin-bottom: 15px;">
+        <label for="verbo-input" style="font-weight: bold; display: block;">2. Inserisci un verbo da coniugare:</label>
+        <input type="text" id="verbo-input" placeholder="Es. finire" style="width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box;">
+    </div>
+
+    <button type="button" onclick="coniugaVerbo()" style="background-color: #3498db; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; width: 100%;">
+        Coniuga Verbo
+    </button>
+
+    <!-- Box Output Risultati -->
+    <div id="risultato" style="margin-top: 20px; padding: 15px; background-color: #e8f4f8; border-left: 5px solid #3498db; display: none; border-radius: 4px;">
+        <h4 id="titolo-risultato" style="margin-top: 0; color: #2c3e50;">Presente Indicativo:</h4>
+        <ul id="coniugazione-list" style="list-style-type: none; padding: 0; margin: 0;"></ul>
+    </div>
+</div>
 
   <!-- MODAL: AREA DOCENTE / LOGIN -->
   <div class="modal fade" id="modalAdmin" tabindex="-1">
@@ -1608,6 +1642,64 @@
       loadVerbDatabase();
       updateSettings();
     };
+    // === INTEGRAZIONE: LOGICA CONIUGATORE ITALIANO ===
+const databaseModelli = {
+    capire: {
+        desinenze: ["isco", "isci", "isce", "iamo", "ite", "iscono"],
+        verbiCompatibili: ["finire", "pulire", "colpire", "gradire", "preferire", "spedire"],
+        lunghezzaSuffisso: 3
+    },
+    parlare: {
+        desinenze: ["o", "i", "a", "iamo", "ate", "ano"],
+        verbiCompatibili: ["amare", "cantare", "lavorare", "pensare", "studiare", "guidare"],
+        lunghezzaSuffisso: 3
+    },
+    temere: {
+        desinenze: ["o", "i", "e", "iamo", "ete", "ono"],
+        verbiCompatibili: ["vedere", "credere", "vincere", "scrivere", "leggere", "ricevere"],
+        lunghezzaSuffisso: 3
+    }
+};
+
+const pronomiItaliani = ["Io", "Tu", "Lui/Lei", "Noi", "Voi", "Loro"];
+
+function aggiornaSuggerimenti() {
+    const modelloScelto = document.getElementById("modello").value;
+    const info = databaseModelli[modelloScelto];
+    document.getElementById("lista-verbi").innerHTML = 
+        "<strong>Verbi consigliati per questo modello:</strong> " + info.verbiCompatibili.join(", ");
+    document.getElementById("verbo-input").placeholder = "Es. " + info.verbiCompatibili[0];
+}
+
+function coniugaVerbo() {
+    const modelloScelto = document.getElementById("modello").value;
+    let verboInput = document.getElementById("verbo-input").value.trim().toLowerCase();
+    
+    if (verboInput === "") {
+        alert("Per favore, inserisci un verbo italiano.");
+        return;
+    }
+
+    const info = databaseModelli[modelloScelto];
+    const radice = verboInput.substring(0, verboInput.length - info.lunghezzaSuffisso);
+    const listaUI = document.getElementById("coniugazione-list");
+    listaUI.innerHTML = "";
+
+    info.desinenze.forEach((desinenza, index) => {
+        const li = document.createElement("li");
+        li.style.padding = "4px 0";
+        li.style.borderBottom = "1px solid #dce4ec";
+        li.innerHTML = `<span style="font-weight: bold; color: #2c3e50; width: 50px; display: inline-block;">${pronomiItaliani[index]}</span> ${radice}${desinenza}`;
+        listaUI.appendChild(li);
+    });
+
+    document.getElementById("titolo-risultato").innerText = `Presente Indicativo di "${verboInput.toUpperCase()}":`;
+    document.getElementById("risultato").style.display = "block";
+}
+
+// Chiamata di inizializzazione per mostrare i primi suggerimenti all'avvio
+aggiornaSuggerimenti();
+
   </script>
 </body>
 </html>
