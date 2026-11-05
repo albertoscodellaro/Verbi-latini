@@ -253,6 +253,10 @@
                 <input class="form-check-input chk-conj" type="checkbox" id="conj4" value="4" checked onchange="onConjChange()">
                 <label class="form-check-label small" for="conj4">4ª (-ire)</label>
               </div>
+              <div class="form-check form-check-inline me-0">
+                <input class="form-check-input chk-conj" type="checkbox" id="conjSum" value="sum" checked onchange="onConjChange()">
+                <label class="form-check-label small" for="conjSum">Verbo <i>essere</i> (<span class="font-latin">sum</span>)</label>
+              </div>
             </div>
           </div>
 
@@ -436,6 +440,7 @@
           <h6>Come svolgere l'esercizio:</h6>
           <ol class="lh-lg">
             <li><strong>Configurazione:</strong> Scegli la direzione della traduzione (Latino ➔ Italiano, Italiano ➔ Latino o Mista), il numero di quesiti (da 10 a illimitati) e attiva le coniugazioni e i tempi su cui desideri esercitarti.</li>
+            <li><strong>Verbo <i>essere</i>:</strong> <span class="font-latin">sum, es, fui, esse</span> è un'opzione a sé tra le coniugazioni attive e viene proposto in tutti i tempi e modi che possiede (solo attivo): indicativo, congiuntivo, imperativo, infinito e participio futuro (<span class="font-latin">futurus</span>). Non ha passivo, gerundio, gerundivo e supino. Con l'infinito sono accettate anche le forme <span class="font-latin">fore</span> (infinito futuro).</li>
             <li><strong>Avvio:</strong> Clicca sul pulsante <span class="badge bg-success">Nuova Domanda</span> oppure premi la <strong>Barra Spaziatrice</strong> da tastiera.</li>
             <li><strong>Traduzione:</strong>
               <ul>
@@ -606,8 +611,93 @@
       { id: "v12", pres1: "doceo", pres2: "doces", perf1: "docui", supine: "doctum", inf: "docere", italian: "insegnare", italianPp: "insegnato", conj: "2" },
       { id: "v13", pres1: "mitto", pres2: "mittis", perf1: "misi", supine: "missum", inf: "mittere", italian: "inviare", italianPp: "inviato", conj: "3" },
       { id: "v14", pres1: "punio", pres2: "punis", perf1: "punivi", supine: "punitum", inf: "punire", italian: "punire", italianPp: "punito", conj: "4" },
-      { id: "v15", pres1: "timeo", pres2: "times", perf1: "timui", supine: "", inf: "timere", italian: "temere", italianPp: "temuto", conj: "2" }
+      { id: "v15", pres1: "timeo", pres2: "times", perf1: "timui", supine: "", inf: "timere", italian: "temere", italianPp: "temuto", conj: "2" },
+      { id: "v16", pres1: "sum", pres2: "es", perf1: "fui", supine: "", inf: "esse", italian: "essere", italianPp: "stato", conj: "sum" }
     ];
+
+    // ==========================================
+    // VERBO "SUM" (irregolare, solo attivo)
+    // Indicativo (6 tempi), Congiuntivo (4), Imperativo pres./fut.,
+    // Infinito pres./perf./fut., Participio futuro (futurus).
+    // Mancano per natura: passivo, participio pres./perf., gerundio, gerundivo, supino.
+    // ==========================================
+    const SUM_LAT = {
+      ind: {
+        pres: ["sum", "es", "est", "sumus", "estis", "sunt"],
+        impf: ["eram", "eras", "erat", "eramus", "eratis", "erant"],
+        perf: ["fui", "fuisti", "fuit", "fuimus", "fuistis", "fuerunt"],
+        plup: ["fueram", "fueras", "fuerat", "fueramus", "fueratis", "fuerant"],
+        fut:  ["ero", "eris", "erit", "erimus", "eritis", "erunt"],
+        futp: ["fuero", "fueris", "fuerit", "fuerimus", "fueritis", "fuerint"]
+      },
+      sub: {
+        pres: ["sim", "sis", "sit", "simus", "sitis", "sint"],
+        impf: ["essem", "esses", "esset", "essemus", "essetis", "essent"],
+        perf: ["fuerim", "fueris", "fuerit", "fuerimus", "fueritis", "fuerint"],
+        plup: ["fuissem", "fuisses", "fuisset", "fuissemus", "fuissetis", "fuissent"]
+      }
+    };
+    // Persone valide per l'imperativo di sum (indici 0-5 = 1s,2s,3s,1p,2p,3p)
+    const SUM_IMP_PERSONS = { pres: [1, 4], fut: [1, 2, 4, 5] };
+
+    function sumLatin(mode, tense, person) {
+      if (mode === 'ind' || mode === 'sub') return SUM_LAT[mode][tense][person];
+      if (mode === 'imp') {
+        if (tense === 'pres') return person === 4 ? "este" : "es";
+        return ["", "esto", "esto", "", "estote", "sunto"][person];
+      }
+      if (mode === 'inf') return { pres: "esse", perf: "fuisse", fut: "futurum esse" }[tense];
+      if (mode === 'part') return "futurus";
+      return "";
+    }
+    // Forme latine alternative accettate nella direzione Italiano ➔ Latino
+    function sumLatinAlts(mode, tense) {
+      return (mode === 'inf' && tense === 'fut') ? ["fore"] : [];
+    }
+
+    function sumItalian(mode, tense, person) {
+      const pres = ["sono", "sei", "è", "siamo", "siete", "sono"];
+      const impf = ["ero", "eri", "era", "eravamo", "eravate", "erano"];
+      const rem  = ["fui", "fosti", "fu", "fummo", "foste", "furono"];
+      const fut  = ["sarò", "sarai", "sarà", "saremo", "sarete", "saranno"];
+      const sPres = ["sia", "sia", "sia", "siamo", "siate", "siano"];
+      const sImpf = ["fossi", "fossi", "fosse", "fossimo", "foste", "fossero"];
+      const cond  = ["sarei", "saresti", "sarebbe", "saremmo", "sareste", "sarebbero"];
+      const pp = person < 3 ? ["stato", "stata"] : ["stati", "state"];
+      const withPp = (aux) => pp.map(x => aux[person] + " " + x);
+
+      if (mode === 'ind') {
+        if (tense === 'pres') return [pres[person]];
+        if (tense === 'impf') return [impf[person]];
+        if (tense === 'perf') return [rem[person], ...withPp(pres), ...withPp(rem)];
+        if (tense === 'plup') return withPp(impf);
+        if (tense === 'fut')  return [fut[person]];
+        if (tense === 'futp') return withPp(fut);
+      } else if (mode === 'sub') {
+        if (tense === 'pres') return [sPres[person]];
+        if (tense === 'impf') return [sImpf[person], cond[person]];
+        if (tense === 'perf') return withPp(sPres);
+        if (tense === 'plup') return [...withPp(sImpf), ...withPp(cond)];
+      } else if (mode === 'imp') {
+        if (tense === 'pres') return person === 4 ? ["siate"] : ["sii"];
+        return { 1: ["sii", "sia"], 2: ["sia", "sii"], 4: ["siate"], 5: ["siano"] }[person];
+      } else if (mode === 'inf') {
+        if (tense === 'pres') return ["essere"];
+        if (tense === 'perf') return ["essere stato", "essere stata"];
+        return ["stare per essere", "essere futuro"];
+      } else if (mode === 'part') {
+        return ["che sta per essere", "che sarà", "futuro"];
+      }
+      return ["essere"];
+    }
+
+    function verbSupportsTense(verb, tc) {
+      if (verb.conj !== 'sum') return true;
+      return tc.voice === 'act' && tc.mode !== 'nominal';
+    }
+    function conjLabel(c) {
+      return c === 'sum' ? 'sum' : c === '3m' ? '3ª -io' : c + 'ª';
+    }
 
     let verbDatabase = [];
 
@@ -642,6 +732,14 @@
         }
       } else {
         verbDatabase = [...DEFAULT_VERBS];
+      }
+      // Migrazione: aggiunge "sum" ai vocabolari salvati prima di questa versione (una sola volta)
+      if (!localStorage.getItem('frappa_latin_sum_added')) {
+        if (!verbDatabase.some(v => v.conj === 'sum')) {
+          verbDatabase.push(JSON.parse(JSON.stringify(DEFAULT_VERBS.find(v => v.conj === 'sum'))));
+          saveVerbDatabase();
+        }
+        localStorage.setItem('frappa_latin_sum_added', '1');
       }
     }
 
@@ -990,6 +1088,9 @@
     // ==========================================
     function conjugateLatin(verb, mode, tense, voice, person) {
       let conj = verb.conj;
+      if (conj === 'sum') {
+        return sumLatin(mode, tense, person);
+      }
       let presInf = verb.inf || verb.presInf;
       let presStem = presInf.slice(0, -3);
       let perfStem = verb.perf1 ? verb.perf1.slice(0, -1) : presStem + "v";
@@ -1147,7 +1248,9 @@
       let voiceStr = voice === 'pass' ? "passivo" : "attivo";
       let pStr = (mode === 'ind' || mode === 'sub' || mode === 'imp') ? persNames[person] : "";
 
-      return `${pStr} del ${tenseNames[tense] || ''} ${modeNames[mode] || ''} ${voiceStr}`.replace(/\s+/g, ' ').trim();
+      let tenseStr = tenseNames[tense] || '';
+      if ((mode === 'inf' || mode === 'part') && tense === 'fut') tenseStr = 'futuro';
+      return `${pStr} del ${tenseStr} ${modeNames[mode] || ''} ${voiceStr}`.replace(/\s+/g, ' ').trim();
     }
 
     // Format verb paradigm for display
@@ -1233,9 +1336,30 @@
         return;
       }
 
-      const randomVerb = poolVerbs[Math.floor(Math.random() * poolVerbs.length)];
-      const randomTenseConfig = activeTenses[Math.floor(Math.random() * activeTenses.length)];
-      const randomPerson = Math.floor(Math.random() * 6);
+      // "sum" è disponibile solo per indicativo presente e imperfetto attivo
+      const candidateVerbs = poolVerbs.filter(v => activeTenses.some(t => verbSupportsTense(v, t)));
+      if (candidateVerbs.length === 0) {
+        alert("Il verbo essere (sum) esiste solo all'attivo e non ha gerundio, gerundivo e supino: attiva almeno un tempo/modo attivo compatibile oppure seleziona altre coniugazioni.");
+        return;
+      }
+
+      const randomVerb = candidateVerbs[Math.floor(Math.random() * candidateVerbs.length)];
+      const verbTenses = activeTenses.filter(t => verbSupportsTense(randomVerb, t));
+      let randomTenseConfig = verbTenses[Math.floor(Math.random() * verbTenses.length)];
+      let randomPerson = Math.floor(Math.random() * 6);
+
+      if (randomVerb.conj === 'sum') {
+        // Infinito/participio: scelgo il tempo (il participio di sum esiste solo al futuro)
+        if (randomTenseConfig.tense === 'all') {
+          const opts = randomTenseConfig.mode === 'inf' ? ['pres', 'perf', 'fut'] : ['fut'];
+          randomTenseConfig = { ...randomTenseConfig, tense: opts[Math.floor(Math.random() * opts.length)] };
+        }
+        // Imperativo: solo le persone che esistono davvero
+        if (randomTenseConfig.mode === 'imp') {
+          const ok = SUM_IMP_PERSONS[randomTenseConfig.tense];
+          randomPerson = ok[Math.floor(Math.random() * ok.length)];
+        }
+      }
 
       // Direction
       const dirMode = document.querySelector('input[name="direction"]:checked').value;
@@ -1248,7 +1372,9 @@
       const latForm = conjugateLatin(randomVerb, randomTenseConfig.mode, randomTenseConfig.tense, randomTenseConfig.voice, randomPerson);
       const itInf = randomVerb.italian || randomVerb.itInf;
       const itPart = randomVerb.italianPp || randomVerb.itPart;
-      const itaForms = conjugateItalian(itInf, itPart, randomTenseConfig.mode, randomTenseConfig.tense, randomTenseConfig.voice, randomPerson);
+      const itaForms = randomVerb.conj === 'sum'
+        ? sumItalian(randomTenseConfig.mode, randomTenseConfig.tense, randomPerson)
+        : conjugateItalian(itInf, itPart, randomTenseConfig.mode, randomTenseConfig.tense, randomTenseConfig.voice, randomPerson);
       const descr = getGrammarDescription(randomTenseConfig.mode, randomTenseConfig.tense, randomTenseConfig.voice, randomPerson);
 
       currentQuestion = {
@@ -1257,6 +1383,7 @@
         tenseConfig: randomTenseConfig,
         person: randomPerson,
         latinForm: latForm,
+        latinAlts: randomVerb.conj === 'sum' ? sumLatinAlts(randomTenseConfig.mode, randomTenseConfig.tense) : [],
         italianForms: itaForms,
         grammarDesc: descr
       };
@@ -1286,6 +1413,8 @@
           document.getElementById('verbPrompt').innerText = `che ${PRONOUNS_ITA[randomPerson]} ${baseIta}`;
         } else if (randomTenseConfig.mode === 'ind') {
           document.getElementById('verbPrompt').innerText = `${PRONOUNS_ITA[randomPerson]} ${baseIta}`;
+        } else if (randomVerb.conj === 'sum' && randomTenseConfig.mode === 'imp') {
+          document.getElementById('verbPrompt').innerText = `${baseIta} (imperativo ${randomTenseConfig.tense === 'pres' ? 'presente' : 'futuro'})`;
         } else {
           document.getElementById('verbPrompt').innerText = baseIta;
         }
@@ -1393,6 +1522,9 @@
         
         if (userNorm === normLat || userNorm === normLatPron) {
           isCorrect = true;
+        }
+        for (let alt of (currentQuestion.latinAlts || [])) {
+          if (userNorm === normalize(alt) || userNorm === normalize(`${PRONOUNS_LAT[currentQuestion.person]} ${alt}`)) isCorrect = true;
         }
       }
 
@@ -1598,7 +1730,7 @@
 
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td><span class="badge bg-secondary">${v.conj}ª</span></td>
+          <td><span class="badge bg-secondary">${conjLabel(v.conj)}</span></td>
           <td class="font-latin"><strong>${pres1}</strong>, ${pres2}, ${perf1}, ${supine || '-'}, ${inf}</td>
           <td>${itInf}</td>
           <td>${itPp}</td>
